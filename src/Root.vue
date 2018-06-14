@@ -37,8 +37,12 @@
 </template>
 
 <script>
+import formTouched from './support/mixins/formTouched'
+
 export default {
   name: 'vue-abstract-component',
+
+  mixins: [formTouched(vm => vm)],
 
   components: {
     AInput: () => import('./components/AInput')
@@ -51,13 +55,8 @@ export default {
         value2: 'valor2',
         value3: '',
         value4: 'valor4'
-      },
-      formTouched: {}
+      }
     }
-  },
-
-  mounted () {
-    this.formTouched = this.toucher
   },
 
   computed: {
@@ -65,14 +64,6 @@ export default {
       const requireds = ['value1', 'value3']
 
       return this.$f.formValidator(requireds, this.form)
-    },
-
-    toucher () {
-      return this.$f.toucher(this.form)
-    },
-
-    isformTouched () {
-      return !Object.entries(this.formTouched).map(([ key, value ]) => ({ key, value })).every(({ value }) => !value)
     }
   }
 }
