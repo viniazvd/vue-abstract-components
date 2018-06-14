@@ -50,13 +50,23 @@ const formValidator = (requireds, obj, x = new Set(requireds)) =>
       return acc
     }, {})
 
+// https://repl.it/@viniazvd/toucher
+const toucher = obj =>
+  Object
+    .entries(obj)
+    .reduce((acc, [key]) => {
+      acc[key] = false
+      return acc
+    }, {})
+
 const functions = {
   isValid,
   clone,
   equals,
   translateEntity,
   isFormValid,
-  formValidator
+  formValidator,
+  toucher
 }
 
 export default Vue => {
