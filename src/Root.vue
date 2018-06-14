@@ -7,14 +7,14 @@
         required
         :is-valid="formValidator.value1"
         error-message="Coé, Campo value1 tá inválido mané!"
-        :touched="formToucher.value1"
-        @touched="formToucher.value1 = true"
+        :touched="formTouched.value1"
+        @touched="formTouched.value1 = true"
       />
 
       <a-input
         label="titulo"
         v-model="form.value2"
-        @touched="formToucher.value2 = true"
+        @touched="formTouched.value2 = true"
       />
 
       <a-input
@@ -23,14 +23,14 @@
         required
         :is-valid="formValidator.value3"
         error-message="Campo value3 tá inválido!"
-        :touched="formToucher.value3"
-        @touched="formToucher.value3 = true"
+        :touched="formTouched.value3"
+        @touched="formTouched.value3 = true"
       />
 
       <a-input
         label="titulo"
         v-model="form.value4"
-        @touched="formToucher.value4 = true"
+        @touched="formTouched.value4 = true"
       />
     </form>
   </div>
@@ -52,12 +52,12 @@ export default {
         value3: '',
         value4: 'valor4'
       },
-      formToucher: {}
+      formTouched: {}
     }
   },
 
   mounted () {
-    this.formToucher = this.toucher
+    this.formTouched = this.toucher
   },
 
   computed: {
@@ -71,8 +71,8 @@ export default {
       return this.$f.toucher(this.form)
     },
 
-    formTouched () {
-      return !Object.entries(this.formToucher).map(([ key, value ]) => ({ key, value })).every(({ value }) => !value)
+    isformTouched () {
+      return !Object.entries(this.formTouched).map(([ key, value ]) => ({ key, value })).every(({ value }) => !value)
     }
   }
 }
