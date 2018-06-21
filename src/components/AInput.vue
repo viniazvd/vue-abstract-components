@@ -1,6 +1,7 @@
 <template>
   <div class="a-input-component">
     <div v-if="!textArea" class="container" :style="styleContainer">
+      {{ JSON.stringify(mask) }} {{ mask }}
       <span v-if="label" class="label" :style="styleLabel">{{ label }}</span>
 
       <input
@@ -8,19 +9,12 @@
         :style="styleInput"
         :type="type"
         :value="value"
-        :required="required"
+        v-mask="mask"
+        :required="isRequired"
         :disabled="disabled"
         :placeholder="placeholder"
         @input="v => $emit('input', v.target.value)"
       />
-
-      <span
-        v-if="touched && required && !isValid"
-        class="errors"
-        :style="styleError"
-      >
-        {{ errorMessage }}
-      </span>
     </div>
 
     <div v-else class="container">
@@ -31,20 +25,31 @@
         rows="10"
         @input="v => $emit('input', v.target.value)"
       />
-
-      <span
-        v-if="touched && required && !isValid"
-        class="errors"
-        :style="styleError"
-      >
-        {{ errorMessage }}
-      </span>
     </div>
+
+    <span
+      v-if="touched && isRequired && !isValid"
+      class="error"
+      :style="styleError"
+    >
+      {{ errorMessage }}
+    </span>
+    <!-- <span
+      v-if="(touched && isRequired && !(!!validation)) && value"
+      class="error"
+      :style="styleError"
+    >
+      {{ regexValidation }} não é válido
+    </span> -->
   </div>
 </template>
 
 <script>
+import { mask } from 'vue-the-mask'
+
 export default {
+  directives: { mask },
+
   props: {
     styleContainer: {
       type: Object,
@@ -71,9 +76,17 @@ export default {
       default: 'text',
       validator: value => 'text|number|email|password|search|url|tel|file|color'.split('|').indexOf(value) > -1
     },
-    required: {
+    isRequired: {
       type: Boolean,
       default: false
+    },
+    regexValidation: {
+      type: String,
+      default: () => ''
+    },
+    mask: {
+      type: [String, Boolean],
+      default: () => false
     },
     disabled: {
       type: Boolean,
@@ -104,14 +117,37 @@ export default {
     errorMessage: {
       type: String,
       default: `Campo inválido`
-    },
-    touched: Boolean
+    }
+  },
+
+  data () {
+    return {
+      touched: false
+    }
   },
 
   watch: {
-    value () {
-      this.$emit('touched')
+    dirty (v) {
+      if (v) this.touched = true
+    },
+
+    value (v) {
+      if (this.mask) {
+        this.$emit('input', this.inputValid)
+      }
     }
+  },
+
+  computed: {
+    dirty () {
+      return !!this.value
+    }
+
+    // validation () {
+    //   if (this.regexValidation && this.value) {
+    //     return this.$f.regexValidation(this.regexValidation, this.value)
+    //   }
+    // }
   }
 }
 </script>
@@ -127,7 +163,7 @@ export default {
 
     .label { text-transform: uppercase; }
     .input {}
-    .errors { padding-top: 5px; }
+    .error { padding-top: 5px; }
   }
 }
 </style>
