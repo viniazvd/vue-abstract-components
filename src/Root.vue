@@ -9,7 +9,6 @@
         :is-valid="formValidator.value1"
         error-message="Coé, Campo value1 tá inválido mané!"
       />
-        <!-- mask="'##/##/######'" -->
 
       <a-input
         label="Titulo 2"
@@ -28,6 +27,9 @@
       <a-input
         label="Titulo 4"
         v-model="form.value4"
+        is-required
+        :is-valid="formValidator.value4"
+        error-message="TÀ VAZIO ANIMAL!"
       />
 
       <button :disabled="!isFormValid">BOTAO BOLADAO</button>
@@ -49,14 +51,20 @@ export default {
 
   data () {
     return {
-      requireds: ['value1', 'value3'],
+      requireds: ['value1', 'value3', 'value4'],
       form: {
-        value1: '',
+        value1: 'coe',
         value2: 'valor2',
         value3: '',
-        value4: 'valor4'
+        value4: 'val44or4'
       }
     }
+  },
+
+  methods: {
+    // checkError (v) {
+    //   console.log(v)
+    // }
   }
 }
 </script>

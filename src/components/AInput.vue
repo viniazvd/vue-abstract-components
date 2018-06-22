@@ -1,7 +1,6 @@
 <template>
   <div class="a-input-component">
     <div v-if="!textArea" class="container" :style="styleContainer">
-      {{ JSON.stringify(mask) }} {{ mask }}
       <span v-if="label" class="label" :style="styleLabel">{{ label }}</span>
 
       <input
@@ -9,11 +8,11 @@
         :style="styleInput"
         :type="type"
         :value="value"
-        v-mask="mask"
         :required="isRequired"
+        :maxlength="maxlength"
         :disabled="disabled"
         :placeholder="placeholder"
-        @input="v => $emit('input', v.target.value)"
+        @input="v => localValue = v.target.value"
       />
     </div>
 
@@ -23,7 +22,7 @@
       <textarea
         cols="30"
         rows="10"
-        @input="v => $emit('input', v.target.value)"
+        @input="v => localValue = v.target.value"
       />
     </div>
 
@@ -34,22 +33,19 @@
     >
       {{ errorMessage }}
     </span>
-    <!-- <span
-      v-if="(touched && isRequired && !(!!validation)) && value"
+    <span
+      v-if="(touched && isRequired && regexValidation && !(!!maskValidation)) && value"
       class="error"
       :style="styleError"
     >
       {{ regexValidation }} não é válido
-    </span> -->
+    </span>
   </div>
 </template>
 
 <script>
-import { mask } from 'vue-the-mask'
 
 export default {
-  directives: { mask },
-
   props: {
     styleContainer: {
       type: Object,
@@ -85,8 +81,7 @@ export default {
       default: () => ''
     },
     mask: {
-      type: [String, Boolean],
-      default: () => false
+      type: String
     },
     disabled: {
       type: Boolean,
@@ -122,6 +117,7 @@ export default {
 
   data () {
     return {
+      localValue: '',
       touched: false
     }
   },
@@ -131,23 +127,55 @@ export default {
       if (v) this.touched = true
     },
 
-    value (v) {
+    localValue (v) {
       if (this.mask) {
-        this.$emit('input', this.inputValid)
+        this.$emit('input', this.masking(this.mask, this.inputValid))
+      } else {
+        this.$emit('input', this.localValue)
       }
     }
   },
 
   computed: {
     dirty () {
-      return !!this.value
-    }
+      return !!this.localValue
+    },
 
-    // validation () {
-    //   if (this.regexValidation && this.value) {
-    //     return this.$f.regexValidation(this.regexValidation, this.value)
-    //   }
-    // }
+    maskValidation () {
+      if (this.regexValidation && this.localValue) {
+        const isValid = this.$f.regexValidation(this.regexValidation, this.localValue)
+
+        this.$emit('mask-error', !isValid)
+        return isValid
+      }
+    },
+
+    inputValid () {
+      return this.localValue.replace(/[^0-9]/g, '')
+    },
+
+    maxlength () {
+      if (this.mask) {
+        const maskLength = this.mask.split('').length
+        const divisorLength = this.mask.split().filter(v => v === '#')
+
+        return maskLength - divisorLength
+      }
+    }
+  },
+
+  methods: {
+    masking (mask, input = '', divisor = '#') {
+      if (!input.length) return ''
+
+      const inputLeft = String(input).split('')
+      const masked = char => char === divisor ? inputLeft.shift() : char
+
+      return mask
+        .split('')
+        .map(masked)
+        .join('')
+    }
   }
 }
 </script>

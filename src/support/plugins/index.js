@@ -115,8 +115,7 @@ const findBy = (
 const regexValidation = (type, value) => {
   const fields = {
     email: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-    phone: /^\([1-9]{2}\) [2-9][0-9]{3,4}\-[0-9]{4}$/,
-    birthday: /^[0-9]{4}[\-][0-9]{2}[\-][0-9]{2}$/,
+    phone: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3, 4}[-\s.]?[0-9]{4,6}$/im,
     gender: /^(masculino|feminino|outro)$/
   }
 
