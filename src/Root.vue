@@ -24,8 +24,9 @@
         v-model="form.value3"
         is-required
         regex-validation="email"
-        :is-valid="formValidator.value3"
         error-message="Campo value3 tá inválido!"
+        :is-valid="formValidator.value3"
+        @mask-error="checkMaskError"
       />
 
       <a-input
@@ -36,8 +37,8 @@
         :is-valid="formValidator.value4"
         error-message="TÀ VAZIO ANIMAL!"
       />
-
-      <button :disabled="!isFormValid">BOTAO BOLADAO</button>
+      {{ isFormValid }} {{ maskValid }} {{ formDirty }}
+      <button :disabled="!(isFormValid && maskValid && formDirty)">BOTAO BOLADAO</button>
     </form>
   </div>
 </template>
@@ -63,7 +64,17 @@ export default {
         value3: '',
         value4: 'val44or4'
       },
-      errors: {}
+      errors: {
+        value1: false,
+        value3: false,
+        value4: false
+      }
+    }
+  },
+
+  computed: {
+    maskValid () {
+      return !Object.entries(this.errors).map(([key, value]) => value).some(v => v)
     }
   },
 
