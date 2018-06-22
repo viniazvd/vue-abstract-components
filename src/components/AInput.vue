@@ -63,6 +63,10 @@ export default {
       type: Object,
       default: () => ({ 'color': 'red' })
     },
+    name: {
+      type: String,
+      required: true
+    },
     value: {
       type: String,
       default: ''
@@ -145,7 +149,7 @@ export default {
       if (this.regexValidation && this.localValue) {
         const isValid = this.$f.regexValidation(this.regexValidation, this.localValue)
 
-        this.$emit('mask-error', !isValid)
+        this.$emit('mask-error', { [this.name]: !isValid })
         return isValid
       }
     },

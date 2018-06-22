@@ -2,20 +2,24 @@
   <div id="app">
     <form>
       <a-input
+        name="value1"
         label="Titulo 1"
         v-model="form.value1"
         is-required
         regex-validation="gender"
-        :is-valid="formValidator.value1"
         error-message="Coé, Campo value1 tá inválido mané!"
+        :is-valid="formValidator.value1"
+        @mask-error="checkMaskError"
       />
 
       <a-input
+        name="value2"
         label="Titulo 2"
         v-model="form.value2"
       />
 
       <a-input
+        name="value3"
         label="Titulo 3"
         v-model="form.value3"
         is-required
@@ -25,6 +29,7 @@
       />
 
       <a-input
+        name="value4"
         label="Titulo 4"
         v-model="form.value4"
         is-required
@@ -57,14 +62,15 @@ export default {
         value2: 'valor2',
         value3: '',
         value4: 'val44or4'
-      }
+      },
+      errors: {}
     }
   },
 
   methods: {
-    // checkError (v) {
-    //   console.log(v)
-    // }
+    checkMaskError (e) {
+      this.errors = { ...this.errors, ...e }
+    }
   }
 }
 </script>
