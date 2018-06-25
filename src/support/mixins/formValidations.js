@@ -1,8 +1,9 @@
-const formDirty = form => {
+const formDirty = () => {
   return {
     data () {
       return {
         copyForm: {},
+        errors: {},
         formDirty: false
       }
     },
@@ -13,7 +14,7 @@ const formDirty = form => {
 
     watch: {
       isDirty (v) {
-        if (!v) this.formDirty = true
+        if (!v && !this.formDirty) this.formDirty = true
       }
     },
 
@@ -22,12 +23,34 @@ const formDirty = form => {
         return this.$f.equals(this.copyForm, this.form)
       },
 
-      formValidator () {
+      isFilled () {
         return this.$f.formValidator(this.requireds, this.form)
       },
 
-      isFormValid () {
+      isTouched () {
+        return this.hasRegex.reduce((acc, field) => {
+          acc[field] = false
+
+          return acc
+        }, {})
+      },
+
+      hasErrors () {
+        return !Object.entries(this.errors).map(([key, value]) => value).some(v => v)
+      },
+
+      formFilled () {
         return this.$f.isFormValid(this.requireds, this.form)
+      },
+
+      isDisabled () {
+        return !(this.formFilled && this.hasErrors && this.formDirty)
+      }
+    },
+
+    methods: {
+      syncError (e) {
+        this.errors = { ...this.errors, ...e }
       }
     }
   }

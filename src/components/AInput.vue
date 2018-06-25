@@ -12,38 +12,28 @@
         :maxlength="maxlength"
         :disabled="disabled"
         :placeholder="placeholder"
-        @input="v => localValue = v.target.value"
+        v-mask="mask"
+        @input="v => $emit('input', v.target.value)"
       />
     </div>
 
     <div v-else class="container">
       <span v-if="label" class="label">{{ label }}</span>
 
-      <textarea
-        cols="30"
-        rows="10"
-        @input="v => localValue = v.target.value"
-      />
+      <textarea cols="30" rows="10" @input="v => $emit('input', v.target.value)" />
     </div>
 
-    <span
-      v-if="touched && isRequired && !isValid"
-      class="error"
-      :style="styleError"
-    >
+    <span v-if="isTouched && isRequired && !isFilled" class="error" :style="styleError">
       {{ errorMessage }}
     </span>
-    <span
-      v-if="(touched && isRequired && regexValidation && !(!!maskValidation)) && value"
-      class="error"
-      :style="styleError"
-    >
+    <span v-if="(isTouched && isRequired && regexValidation && !error) && value" class="error" :style="styleError">
       {{ regexValidation }} não é válido
     </span>
   </div>
 </template>
 
 <script>
+import { mask } from 'vue-the-mask'
 
 export default {
   props: {
@@ -76,6 +66,10 @@ export default {
       default: 'text',
       validator: value => 'text|number|email|password|search|url|tel|file|color'.split('|').indexOf(value) > -1
     },
+    isTouched: {
+      type: Boolean,
+      default: false
+    },
     isRequired: {
       type: Boolean,
       default: false
@@ -84,9 +78,7 @@ export default {
       type: String,
       default: () => ''
     },
-    mask: {
-      type: String
-    },
+    mask: [String, Array],
     disabled: {
       type: Boolean,
       default: false
@@ -99,7 +91,6 @@ export default {
       type: String,
       default: ''
     },
-    icon: String,
     textArea: {
       type: Boolean,
       default: false
@@ -112,50 +103,31 @@ export default {
       type: String,
       default: '10'
     },
-    isValid: Boolean,
+    isFilled: Boolean,
     errorMessage: {
       type: String,
-      default: `Campo inválido`
+      default: `Campo vazio ou inválido`
     }
   },
 
-  data () {
-    return {
-      localValue: '',
-      touched: false
-    }
-  },
-
-  watch: {
-    dirty (v) {
-      if (v) this.touched = true
-    },
-
-    localValue (v) {
-      if (this.mask) {
-        this.$emit('input', this.masking(this.mask, this.inputValid))
-      } else {
-        this.$emit('input', this.localValue)
+  directives: {
+    mask (el, binding) {
+      if (!binding.value || !binding.value.length) {
+        return
       }
+      return mask(el, binding)
     }
   },
 
   computed: {
-    dirty () {
-      return !!this.localValue
-    },
+    error () {
+      if (this.regexValidation && this.value) {
+        const isValidRegex = this.$f.regexValidation(this.regexValidation, this.value)
+        console.log('oo')
 
-    maskValidation () {
-      if (this.regexValidation && this.localValue) {
-        const isValid = this.$f.regexValidation(this.regexValidation, this.localValue)
-
-        this.$emit('mask-error', { [this.name]: !isValid })
-        return isValid
+        this.$emit('error', { [this.name]: !isValidRegex })
+        return isValidRegex
       }
-    },
-
-    inputValid () {
-      return this.localValue.replace(/[^0-9]/g, '')
     },
 
     maxlength () {
@@ -165,20 +137,6 @@ export default {
 
         return maskLength - divisorLength
       }
-    }
-  },
-
-  methods: {
-    masking (mask, input = '', divisor = '#') {
-      if (!input.length) return ''
-
-      const inputLeft = String(input).split('')
-      const masked = char => char === divisor ? inputLeft.shift() : char
-
-      return mask
-        .split('')
-        .map(masked)
-        .join('')
     }
   }
 }

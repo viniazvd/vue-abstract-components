@@ -3,42 +3,41 @@
     <form>
       <a-input
         name="value1"
-        label="Titulo 1"
-        v-model="form.value1"
+        label="Gender"
         is-required
+        v-model="form.value1"
         regex-validation="gender"
-        error-message="Coé, Campo value1 tá inválido mané!"
-        :is-valid="formValidator.value1"
-        @mask-error="checkMaskError"
+        :is-filled="isFilled.value1"
+        :is-touched="isTouched.value1"
       />
+        <!-- @error="syncError" -->
 
       <a-input
         name="value2"
-        label="Titulo 2"
+        label="coe"
         v-model="form.value2"
       />
 
       <a-input
         name="value3"
-        label="Titulo 3"
-        v-model="form.value3"
+        label="E-mail"
         is-required
+        v-model="form.value3"
         regex-validation="email"
-        error-message="Campo value3 tá inválido!"
-        :is-valid="formValidator.value3"
-        @mask-error="checkMaskError"
+        :is-filled="isFilled.value3"
+        :is-touched="isTouched.value3"
+        @error="syncError"
       />
 
       <a-input
         name="value4"
-        label="Titulo 4"
-        v-model="form.value4"
+        label="Date"
         is-required
-        :is-valid="formValidator.value4"
-        error-message="TÀ VAZIO ANIMAL!"
+        v-model="form.value4"
+        mask="##/##/####"
+        :is-filled="isFilled.value4"
       />
-      {{ isFormValid }} {{ maskValid }} {{ formDirty }}
-      <button :disabled="!(isFormValid && maskValid && formDirty)">BOTAO BOLADAO</button>
+      <button :disabled="isDisabled">BOTÃO BOLADÃO ESTÁ: {{ formFilled && hasErrors && formDirty }}</button>
     </form>
   </div>
 </template>
@@ -58,29 +57,13 @@ export default {
   data () {
     return {
       requireds: ['value1', 'value3', 'value4'],
+      hasRegex: ['value1', 'value3'],
       form: {
         value1: 'coe',
         value2: 'valor2',
         value3: '',
-        value4: 'val44or4'
-      },
-      errors: {
-        value1: false,
-        value3: false,
-        value4: false
+        value4: ''
       }
-    }
-  },
-
-  computed: {
-    maskValid () {
-      return !Object.entries(this.errors).map(([key, value]) => value).some(v => v)
-    }
-  },
-
-  methods: {
-    checkMaskError (e) {
-      this.errors = { ...this.errors, ...e }
     }
   }
 }
