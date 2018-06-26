@@ -1,40 +1,9 @@
-<template>
-  <div class="a-input-component">
-    <div v-if="!textArea" class="container" :style="styleContainer">
-      <span v-if="label" class="label" :style="styleLabel">{{ label }}</span>
-
-      <input
-        class="input"
-        :style="styleInput"
-        :type="type"
-        :value="value"
-        :maxlength="maxlength"
-        :disabled="disabled"
-        :placeholder="placeholder"
-        v-mask="mask"
-        @input="v => $emit('input', v.target.value)"
-      />
-    </div>
-
-    <div v-else class="container">
-      <span v-if="label" class="label">{{ label }}</span>
-
-      <textarea cols="30" rows="10" @input="v => $emit('input', v.target.value)" />
-    </div>
-
-    <span v-if="isTouched && !isRequired && !isFilled" class="error" :style="styleError">
-      {{ errorMessage }}
-    </span>
-    <span v-if="(isTouched && isRequired && regexValidation && error) && value" class="error" :style="styleError">
-      {{ regexValidation }} não é válido
-    </span>
-  </div>
-</template>
-
 <script>
 import { mask } from 'vue-the-mask'
 
 export default {
+  name: 'a-input',
+
   props: {
     styleContainer: {
       type: Object,
@@ -131,6 +100,14 @@ export default {
   },
 
   computed: {
+    hasRequiredError () {
+      return this.isTouched && !this.isRequired && !this.isFilled
+    },
+
+    hasRegexError () {
+      return (this.isTouched && this.isRequired && this.regexValidation && this.error) && this.value
+    },
+
     error () {
       if (this.regexValidation && this.value && this.isTouched) {
         const isValidRegex = this.$f.regexValidation(this.regexValidation, this.value)
@@ -146,7 +123,74 @@ export default {
 
         return maskLength - divisorLength
       }
+    },
+
+    // shorthand computeds by 'template'
+    optionsTextArea () {
+      return {
+        domProps: {
+          value: this.value
+        },
+        attrs: {
+          class: 'textarea',
+          cols: this.cols,
+          rows: this.rows
+        }
+      }
+    },
+
+    optionsInput () {
+      return {
+        domProps: {
+          value: this.value
+        },
+        style: this.styleInput,
+        attrs: {
+          class: 'input',
+          type: this.type,
+          maxlength: this.maxlength,
+          disabled: this.disabled,
+          placeholder: this.placeholder
+        },
+        on: {
+          input: event => {
+            this.$emit('input', event.target.value)
+          }
+        },
+        directives: [{
+          name: 'mask',
+          rawName: 'v-mask',
+          value: this.mask,
+          expression: 'mask'
+        }]
+      }
     }
+  },
+
+  render (createElement) {
+    const label = [ createElement('div', { attrs: { 'class': 'label' } }, this.label) ]
+    const textArea = [ createElement('textarea', this.optionsTextArea) ]
+    const input = [ createElement('input', this.optionsInput) ]
+
+    const makeRequiredError = () => {
+      return this.hasRequiredError
+        ? [ createElement('span', { style: this.styleError, attrs: { class: 'error' } }, this.errorMessage) ]
+        : false
+    }
+
+    const makeRegexError = () => {
+      return this.hasRegexError
+        ? [ createElement('span', { style: this.styleError, attrs: { class: 'error' } }, `${this.regexValidation} não é válido`) ]
+        : false
+    }
+
+    return createElement('div', { attrs: { 'class': 'a-input-component' } },
+      [
+        ...label,
+        this.textArea ? textArea : input,
+        makeRequiredError(),
+        makeRegexError()
+      ])
   }
 }
 </script>
@@ -163,6 +207,7 @@ export default {
     .label { text-transform: uppercase; }
     .input {}
     .error { padding-top: 5px; }
+    .textarea {}
   }
 }
 </style>
