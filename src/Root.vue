@@ -31,6 +31,14 @@
         :is-required="formRequired.value4"
         :is-touched.sync="formTouched.value4"
       />
+
+      <a-select
+        v-model="form.value5"
+        :options="options"
+        track-by="id"
+        display-by="label"
+      />
+
       <button :disabled="isDisabled">
         BOTÃO BOLADÃO FIRMÃO ESTÁ: {{ formFilled && hasErrors && formDirty }}
       </button>
@@ -47,18 +55,25 @@ export default {
   mixins: [formValidations()],
 
   components: {
-    AInput: () => import('./components/AInput')
+    AInput: () => import('./components/AInput'),
+    ASelect: () => import('./components/ASelect')
   },
 
   data () {
     return {
-      requireds: ['value1', 'value3', 'value4'],
+      requireds: ['value1', 'value3', 'value4', 'value5'],
       form: {
         value1: 'coe',
         value2: 'valor2',
         value3: '',
-        value4: ''
-      }
+        value4: '',
+        value5: ''
+      },
+      options: [
+        { id: 1, name: 'name-coe1', label: 'label-coe1' },
+        { id: 2, name: 'name-coe2', label: 'label-coe2' },
+        { id: 3, name: 'name-coe3', label: 'label-coe3' }
+      ]
     }
   },
 
