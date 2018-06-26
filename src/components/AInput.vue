@@ -8,7 +8,6 @@
         :style="styleInput"
         :type="type"
         :value="value"
-        :required="isRequired"
         :maxlength="maxlength"
         :disabled="disabled"
         :placeholder="placeholder"
@@ -23,10 +22,10 @@
       <textarea cols="30" rows="10" @input="v => $emit('input', v.target.value)" />
     </div>
 
-    <span v-if="isTouched && isRequired && !isFilled" class="error" :style="styleError">
+    <span v-if="isTouched && !isRequired && !isFilled" class="error" :style="styleError">
       {{ errorMessage }}
     </span>
-    <span v-if="(isTouched && isRequired && regexValidation && !error) && value" class="error" :style="styleError">
+    <span v-if="(isTouched && isRequired && regexValidation && error) && value" class="error" :style="styleError">
       {{ regexValidation }} não é válido
     </span>
   </div>
@@ -110,6 +109,18 @@ export default {
     }
   },
 
+  watch: {
+    value (a, b) {
+      if (a !== b && !this.isTouched) {
+        this.$emit('update:isTouched', true)
+      }
+    },
+
+    error (isValidRegex) {
+      this.$emit('error', { [this.name]: isValidRegex })
+    }
+  },
+
   directives: {
     mask (el, binding) {
       if (!binding.value || !binding.value.length) {
@@ -121,12 +132,10 @@ export default {
 
   computed: {
     error () {
-      if (this.regexValidation && this.value) {
+      if (this.regexValidation && this.value && this.isTouched) {
         const isValidRegex = this.$f.regexValidation(this.regexValidation, this.value)
-        console.log('oo')
 
-        this.$emit('error', { [this.name]: !isValidRegex })
-        return isValidRegex
+        return !isValidRegex
       }
     },
 

@@ -4,12 +4,14 @@ const formDirty = () => {
       return {
         copyForm: {},
         errors: {},
-        formDirty: false
+        formDirty: false,
+        formTouched: {}
       }
     },
 
     created () {
-      this.copyForm = this.$f.clone(this.form)
+      if (this.form) this.copyForm = this.$f.clone(this.form)
+      if (this.form) this.formTouched = this.setTouched(Object.keys(this.form))
     },
 
     watch: {
@@ -23,20 +25,16 @@ const formDirty = () => {
         return this.$f.equals(this.copyForm, this.form)
       },
 
-      isFilled () {
+      formRequired () {
         return this.$f.formValidator(this.requireds, this.form)
       },
 
-      isTouched () {
-        return this.hasRegex.reduce((acc, field) => {
-          acc[field] = false
-
-          return acc
-        }, {})
-      },
-
       hasErrors () {
-        return !Object.entries(this.errors).map(([key, value]) => value).some(v => v)
+        if (this.$f.isValid(this.errors)) {
+          return Object.entries(this.errors).map(([key, value]) => value).some(v => v)
+        }
+
+        return false
       },
 
       formFilled () {
@@ -44,13 +42,33 @@ const formDirty = () => {
       },
 
       isDisabled () {
-        return !(this.formFilled && this.hasErrors && this.formDirty)
+        return !(this.formFilled && !this.hasErrors && this.formDirty)
       }
     },
 
     methods: {
-      syncError (e) {
-        this.errors = { ...this.errors, ...e }
+      syncError (error) {
+        this.errors = { ...this.errors, ...error }
+      },
+
+      setTouched (form) {
+        return form.reduce((acc, field) => {
+          acc[field] = false
+
+          return acc
+        }, {})
+      },
+
+      allTouched () {
+        this.formTouched = Object.entries(this.formTouched).reduce((acc, [key, value]) => {
+          acc[key] = true
+
+          return acc
+        }, {})
+      },
+
+      checkErrors () {
+        return Object.entries(this.formTouched).every(([key, value]) => value)
       }
     }
   }
