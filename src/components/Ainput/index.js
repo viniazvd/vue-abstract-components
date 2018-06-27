@@ -59,7 +59,7 @@ const index = {
     const textArea = [ h('textarea', this.optionsTextArea) ]
     const input = [ h('input', this.optionsInput) ]
 
-    return h('div', { attrs: { 'class': 'a-input-component' } },
+    return h('div', { attrs: { 'class': 'a-input' } },
       [
         ...label,
         this.textArea ? textArea : input,
