@@ -23,6 +23,8 @@ const index = {
       default: () => ({ 'color': 'red' })
     },
     icon: String,
+    color: String,
+    size: String,
     name: {
       type: String,
       required: true
@@ -182,7 +184,7 @@ const index = {
     },
 
     makeIcon (h) {
-      return this.icon ? [ h(aIcon) ] : false
+      return this.icon ? [ h(aIcon, { attrs: this.$props }) ] : false
     }
   },
 

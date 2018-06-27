@@ -5,6 +5,8 @@
         name="value1"
         label="Gender"
         icon="chevron-left"
+        size="15"
+        color="red"
         v-model="form.value1"
         regex-validation="gender"
         :is-required="formRequired.value1"
