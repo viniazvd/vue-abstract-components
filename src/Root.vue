@@ -11,7 +11,7 @@
         @error="syncError"
       />
 
-      <a-input name="value2" label="coe" v-model="form.value2" />
+      <a-input name="value2" label="coe" v-model="form.value2" text-area />
 
       <a-input
         name="value3"
@@ -33,10 +33,12 @@
       />
 
       <a-select
+        label="Mané"
+        placeholder="Seleciona eu aí lek"
         v-model="form.value5"
         :options="options"
         track-by="id"
-        display-by="label"
+        display-by="name"
       />
 
       <button :disabled="isDisabled">
@@ -55,7 +57,7 @@ export default {
   mixins: [formValidations()],
 
   components: {
-    AInput: () => import('./components/AInput'),
+    AInput: () => import('./components/Ainput'),
     ASelect: () => import('./components/ASelect')
   },
 

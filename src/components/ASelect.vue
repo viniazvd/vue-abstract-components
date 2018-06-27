@@ -1,46 +1,28 @@
 <template>
   <div
-    :class="classes"
-    @click="toggle"
+    :class="['a-select', { 'label-margin': label }]"
     v-click-outside="close"
+    @click="isOpened = !isOpened"
   >
+    <span class="label">{{ label }}</span>
+
     <section :class="selectedClasses">
       <slot :selected="value">
-        <span class="text">
-          {{ selected }}
-        </span>
-
-        <!-- <slot name="select-icon">
-          <c-icon
-            v-if="selectIcon"
-            class="icon"
-            size="15"
-            :icon="selectIcon"
-          />
-        </slot> -->
+        <span class="text">{{ selected }}</span>
       </slot>
     </section>
 
-    <section
-      v-if="isOpened"
-      class="options"
-      :class="optionsClasses"
-    >
-      <slot
-        name="options"
-        :options="options"
-      >
+    <section v-if="isOpened" :class="optionsClasses">
+      <slot name="options" :options="options">
         <div
-          class="option"
           :class="optionClasses"
           v-for="(option, index) in options"
-          v-if="clearOnSelect || selectedPosition !== index"
           :key="index"
-          @click="select(index)"
+          @click="selected = options[index]"
         >
           <slot name="option" :option="option">
-            <p class="text">
-              {{ getOption(option) }}
+            <p :class="['text', { 'selected': isSelected === index }]">
+              {{ displayBy ? option[displayBy] : option }}
             </p>
           </slot>
         </div>
@@ -62,6 +44,7 @@ export default {
   },
 
   props: {
+    label: String,
     options: {
       type: Array,
       required: true
@@ -69,15 +52,6 @@ export default {
     trackBy: String,
     displayBy: String,
     placeholder: String,
-    closeOnSelect: {
-      type: Boolean,
-      default: true
-    },
-    clearOnSelect: Boolean,
-    selectIcon: {
-      type: String,
-      default: 'chevron-down'
-    },
     value: [Object, String]
   },
 
@@ -87,10 +61,8 @@ export default {
     selected: {
       get () {
         return this.value
-          ? this.displayBy
-            ? this.value[this.displayBy]
-            : this.value
-          : ''
+          ? this.displayBy ? this.value[this.displayBy] : this.value
+          : '' || this.placeholder
       },
       set (value) {
         this.$emit('update', value)
@@ -99,74 +71,36 @@ export default {
       }
     },
 
-    classes () {
-      const classes = [ 'a-select', {
-        '-is-opened': this.isOpened
-      }]
-      return classes
-    },
-
     selectedClasses () {
       return [ 'selected', {
-        '-default':
-          !(this.$slots.default || this.$scopedSlots.default)
+        '-default': !(this.$slots.default || this.$scopedSlots.default)
       }]
     },
 
     optionsClasses () {
       return [ 'options', {
-        '-default':
-          !(this.$slots.options || this.$scopedSlots.options)
+        '-default': !(this.$slots.options || this.$scopedSlots.options)
       }]
     },
 
     optionClasses () {
       return [ 'option', {
-        '-default':
-          !(this.$slots.option || this.$scopedSlots.option)
+        '-default': !(this.$slots.option || this.$scopedSlots.option)
       }]
     },
 
-    selectedPosition () {
-      return this.options
-        .findIndex(option =>
-          this.trackBy
-            ? this.value[this.trackBy] === option[this.trackBy]
-            : this.value === option
-        )
+    isSelected () {
+      const position = option => this.trackBy
+        ? this.value[this.trackBy] === option[this.trackBy]
+        : this.value === option
+
+      return this.options.findIndex(position)
     }
   },
 
   methods: {
     close () {
       this.isOpened = false
-    },
-
-    // clear () {
-    //   if (this.clearOnSelect)
-    //     this.value = null
-    // },
-
-    toggle () {
-      this.isOpened = !this.isOpened
-    },
-
-    getOption (option) {
-      return this.displayBy
-        ? option[this.displayBy]
-        : option
-    },
-
-    select (index) {
-      if (
-        this.clearOnSelect &&
-        this.selectedPosition === index
-      ) {
-        this.selected = null
-        return
-      }
-
-      this.selected = this.options[index]
     }
   }
 }
@@ -174,11 +108,22 @@ export default {
 
 <style lang="scss">
 .a-select {
+  height: 30px;
+  background-color: white;
+  border: 1px solid lightgray;
   position: relative;
 
+  & > .label {
+    position: absolute;
+    top: -20px;
+  }
+
   & > .selected.-default {
-    border: 1px solid black;
     background-color: lightgrey;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
   }
 
   & > .options.-default {
@@ -191,13 +136,19 @@ export default {
     transform: translate(0, 0);
 
     & > .option.-default {
+      border: 1px solid darkgray;
+      height: 30px;
       display: flex;
-      justify-content: flex-start;
       align-items: center;
-      padding: 20px;
+      padding-left: 10px;
+      cursor: pointer;
+
+      & > .text { color: black; }
+      & > .selected { color: red; }
     }
   }
-
-  &.-is-opened {}
+}
+.label-margin {
+  margin-top: 20px;
 }
 </style>

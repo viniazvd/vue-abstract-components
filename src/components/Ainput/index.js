@@ -1,7 +1,7 @@
-<script>
 import { mask } from 'vue-the-mask'
+import './style.scss'
 
-export default {
+const index = {
   name: 'a-input',
 
   props: {
@@ -32,7 +32,7 @@ export default {
     type: {
       type: String,
       default: 'text',
-      validator: value => 'text|number|email|password|search|url|tel|file|color'.split('|').indexOf(value) > -1
+      validator: type => /text|number|email|password|search|url|tel|file|color/.test(type)
     },
     isTouched: {
       type: Boolean,
@@ -71,7 +71,7 @@ export default {
       type: String,
       default: '10'
     },
-    isFilled: Boolean,
+    // isFilled: Boolean,
     errorMessage: {
       type: String,
       default: `Campo vazio ou inválido`
@@ -150,7 +150,9 @@ export default {
           type: this.type,
           maxlength: this.maxlength,
           disabled: this.disabled,
-          placeholder: this.placeholder
+          placeholder: this.placeholder,
+          cols: this.cols,
+          rows: this.rows
         },
         on: {
           input: event => {
@@ -167,47 +169,33 @@ export default {
     }
   },
 
-  render (createElement) {
-    const label = [ createElement('div', { attrs: { 'class': 'label' } }, this.label) ]
-    const textArea = [ createElement('textarea', this.optionsTextArea) ]
-    const input = [ createElement('input', this.optionsInput) ]
-
-    const makeRequiredError = () => {
+  methods: {
+    makeRequiredError (h) {
       return this.hasRequiredError
-        ? [ createElement('span', { style: this.styleError, attrs: { class: 'error' } }, this.errorMessage) ]
+        ? [ h('span', { style: this.styleError, attrs: { class: 'error' } }, this.errorMessage) ]
         : false
-    }
+    },
 
-    const makeRegexError = () => {
+    makeRegexError (h) {
       return this.hasRegexError
-        ? [ createElement('span', { style: this.styleError, attrs: { class: 'error' } }, `${this.regexValidation} não é válido`) ]
+        ? [ h('span', { style: this.styleError, attrs: { class: 'error' } }, `${this.regexValidation} não é válido`) ]
         : false
     }
+  },
 
-    return createElement('div', { attrs: { 'class': 'a-input-component' } },
+  render (h) {
+    const label = [ h('div', { attrs: { 'class': 'label' } }, this.label) ]
+    const textArea = [ h('textarea', this.optionsTextArea) ]
+    const input = [ h('input', this.optionsInput) ]
+
+    return h('div', { attrs: { 'class': 'a-input-component' } },
       [
         ...label,
         this.textArea ? textArea : input,
-        makeRequiredError(),
-        makeRegexError()
+        this.makeRequiredError(h),
+        this.makeRegexError(h)
       ])
   }
 }
-</script>
 
-<style lang="scss">
-.a-input-component {
-  max-width: 400px;
-
-  .container {
-    display: flex;
-    justify-content: baseline;
-    flex-direction: column;
-
-    .label { text-transform: uppercase; }
-    .input {}
-    .error { padding-top: 5px; }
-    .textarea {}
-  }
-}
-</style>
+export default index
