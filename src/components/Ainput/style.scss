@@ -1,14 +1,9 @@
 .a-input-component {
   max-width: 400px;
 
-  .container {
-    display: flex;
-    justify-content: baseline;
-    flex-direction: column;
-
-    .label { text-transform: uppercase; }
-    .input {}
-    .error { padding-top: 5px; }
-    .textarea {}
-  }
+  & > .label { text-transform: uppercase; }
+  & > .input { position: relative; }
+  & > .c-icon {}
+  & > .error { display: flex; padding-top: 5px; }
+  & > .textarea {}
 }

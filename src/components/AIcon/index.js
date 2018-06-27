@@ -1,26 +1,19 @@
-<!--
-<template>
-  <icon
-    class="c-icon"
-    :style="{ fill: color }"
-    :icon="icon"
-    :width="size"
-    :height="size"
-  />
-</template>
--->
-<script>
+import './style.scss'
+
 import Icon from 'vue-svgicon'
 
-export default {
-  components: { Icon },
+const index = {
+  name: 'a-icon',
 
   props: {
     icon: {
       type: String,
       required: true
     },
-    size: String,
+    size: {
+      type: String,
+      default: '20'
+    },
     color: {
       type: String,
       default: 'black'
@@ -55,20 +48,15 @@ export default {
 
   methods: {
     async loadIcon () {
-      await import('../assets/icons/' + this.icon)
+      await import('../../assets/icons/' + this.icon)
     }
   },
 
   render (h) {
-    const aIcon = [ h('icon', this.optionsIcon) ]
+    const aIcon = [ h(Icon, this.optionsIcon) ]
 
     return h('div', { attrs: { 'class': 'c-icon' } }, [ aIcon ])
   }
 }
-</script>
 
-<style lang="scss">
-.c-icon {
-  display: inline-block;
-}
-</style>
+export default index

@@ -9,6 +9,10 @@
     <section :class="selectedClasses">
       <slot :selected="value">
         <span class="text">{{ selected }}</span>
+
+        <slot name="select-icon">
+          <a-icon v-if="icon" class="icon" size="15" :icon="iconHandler" />
+        </slot>
       </slot>
     </section>
 
@@ -32,10 +36,13 @@
 </template>
 
 <script>
+import AIcon from './AIcon'
 import clickOutside from '../support/directives/clickOutside'
 
 export default {
   name: 'a-select',
+
+  components: { AIcon },
 
   data () {
     return {
@@ -50,6 +57,10 @@ export default {
       required: true
     },
     trackBy: String,
+    icon: {
+      type: String,
+      default: 'chevron-down'
+    },
     displayBy: String,
     placeholder: String,
     value: [Object, String]
@@ -95,6 +106,10 @@ export default {
         : this.value === option
 
       return this.options.findIndex(position)
+    },
+
+    iconHandler () {
+      return this.isOpened ? 'bug' : 'chevron-up'
     }
   },
 
@@ -123,7 +138,10 @@ export default {
     height: 100%;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding-left: 10px;
+
+    & > .icon { padding-right: 10px; }
   }
 
   & > .options.-default {

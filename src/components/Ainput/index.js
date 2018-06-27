@@ -1,85 +1,17 @@
-import { mask } from 'vue-the-mask'
-import aIcon from '../AIcon'
+import props from './props'
+import computed from './computed'
 import './style.scss'
+
+import AIcon from '../AIcon'
+
+import { mask } from 'vue-the-mask'
 
 const index = {
   name: 'a-input',
 
-  props: {
-    styleContainer: {
-      type: Object,
-      default: () => ({ 'width': '100%' })
-    },
-    styleLabel: {
-      type: Object,
-      default: () => ({ 'paddingRight': '10px' })
-    },
-    styleInput: {
-      type: Object,
-      default: () => ({ 'height': '25px' })
-    },
-    styleError: {
-      type: Object,
-      default: () => ({ 'color': 'red' })
-    },
-    icon: String,
-    color: String,
-    size: String,
-    name: {
-      type: String,
-      required: true
-    },
-    value: {
-      type: String,
-      default: ''
-    },
-    type: {
-      type: String,
-      default: 'text',
-      validator: type => /text|number|email|password|search|url|tel|file|color/.test(type)
-    },
-    isTouched: {
-      type: Boolean,
-      default: false
-    },
-    isRequired: {
-      type: Boolean,
-      default: false
-    },
-    regexValidation: {
-      type: String,
-      default: () => ''
-    },
-    mask: [String, Array],
-    disabled: {
-      type: Boolean,
-      default: false
-    },
-    placeholder: {
-      type: String,
-      default: ''
-    },
-    label: {
-      type: String,
-      default: ''
-    },
-    textArea: {
-      type: Boolean,
-      default: false
-    },
-    cols: {
-      type: String,
-      default: '30'
-    },
-    rows: {
-      type: String,
-      default: '10'
-    },
-    errorMessage: {
-      type: String,
-      default: `Campo vazio ou inválido`
-    }
-  },
+  props,
+
+  computed,
 
   watch: {
     value (a, b) {
@@ -102,74 +34,6 @@ const index = {
     }
   },
 
-  computed: {
-    hasRequiredError () {
-      return this.isTouched && !this.isRequired && !this.isFilled
-    },
-
-    hasRegexError () {
-      return (this.isTouched && this.isRequired && this.regexValidation && this.error) && this.value
-    },
-
-    error () {
-      if (this.regexValidation && this.value && this.isTouched) {
-        const isValidRegex = this.$f.regexValidation(this.regexValidation, this.value)
-
-        return !isValidRegex
-      }
-    },
-
-    maxlength () {
-      if (this.mask) {
-        const maskLength = this.mask.split('').length
-        const divisorLength = this.mask.split().filter(v => v === '#')
-
-        return maskLength - divisorLength
-      }
-    },
-
-    // shorthand computeds by 'template'
-    optionsTextArea () {
-      return {
-        domProps: {
-          value: this.value
-        },
-        attrs: {
-          class: 'textarea',
-          cols: this.cols,
-          rows: this.rows
-        }
-      }
-    },
-
-    optionsInput () {
-      return {
-        domProps: {
-          value: this.value
-        },
-        style: this.styleInput,
-        attrs: {
-          class: 'input',
-          type: this.type,
-          maxlength: this.maxlength,
-          disabled: this.disabled,
-          placeholder: this.placeholder
-        },
-        on: {
-          input: event => {
-            this.$emit('input', event.target.value)
-          }
-        },
-        directives: [{
-          name: 'mask',
-          rawName: 'v-mask',
-          value: this.mask,
-          expression: 'mask'
-        }]
-      }
-    }
-  },
-
   methods: {
     makeRequiredError (h) {
       return this.hasRequiredError
@@ -184,12 +48,14 @@ const index = {
     },
 
     makeIcon (h) {
-      return this.icon ? [ h(aIcon, { attrs: this.$props }) ] : false
+      return this.icon ? [ h(AIcon, this.optionsIcon) ] : false
     }
   },
 
   render (h) {
     const label = [ h('div', { attrs: { 'class': 'label' } }, this.label) ]
+
+    // adjust later: create components and import reactively
     const textArea = [ h('textarea', this.optionsTextArea) ]
     const input = [ h('input', this.optionsInput) ]
 
