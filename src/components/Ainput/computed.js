@@ -69,7 +69,7 @@ const computed = {
   },
 
   optionsIcon () {
-    const configIconPosition = { position: 'absolute', left: '10px', top: '32px' }
+    const configIconPosition = { position: 'absolute', left: 0, top: '25px' }
     const style = this.icon ? configIconPosition : false
 
     return {

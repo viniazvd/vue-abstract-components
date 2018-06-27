@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <a-title size="1" color="red" icon="bug">COE MANÉÉÉÉ</a-title>
+
     <form @submit.prevent="submit">
       <a-input
         name="value1"
@@ -59,6 +61,7 @@ export default {
     AInput: () => import('./components/Ainput'),
     ASelect: () => import('./components/ASelect'),
     AButton: () => import('./components/AButton'),
+    ATitle: () => import('./components/ATitle'),
     AIcon: () => import('./components/AIcon')
   },
 
