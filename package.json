@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "vue": "^2.5.16",
+    "vue-svgicon": "^2.1.4",
     "vue-the-mask": "^0.11.1"
   },
   "devDependencies": {

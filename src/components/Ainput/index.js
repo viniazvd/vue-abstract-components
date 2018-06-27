@@ -1,4 +1,5 @@
 import { mask } from 'vue-the-mask'
+import aIcon from '../AIcon'
 import './style.scss'
 
 const index = {
@@ -21,6 +22,7 @@ const index = {
       type: Object,
       default: () => ({ 'color': 'red' })
     },
+    icon: String,
     name: {
       type: String,
       required: true
@@ -71,7 +73,6 @@ const index = {
       type: String,
       default: '10'
     },
-    // isFilled: Boolean,
     errorMessage: {
       type: String,
       default: `Campo vazio ou inválido`
@@ -150,9 +151,7 @@ const index = {
           type: this.type,
           maxlength: this.maxlength,
           disabled: this.disabled,
-          placeholder: this.placeholder,
-          cols: this.cols,
-          rows: this.rows
+          placeholder: this.placeholder
         },
         on: {
           input: event => {
@@ -180,6 +179,10 @@ const index = {
       return this.hasRegexError
         ? [ h('span', { style: this.styleError, attrs: { class: 'error' } }, `${this.regexValidation} não é válido`) ]
         : false
+    },
+
+    makeIcon (h) {
+      return this.icon ? [ h(aIcon) ] : false
     }
   },
 
@@ -192,6 +195,7 @@ const index = {
       [
         ...label,
         this.textArea ? textArea : input,
+        this.makeIcon(h),
         this.makeRequiredError(h),
         this.makeRegexError(h)
       ])

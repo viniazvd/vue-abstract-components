@@ -4,6 +4,7 @@
       <a-input
         name="value1"
         label="Gender"
+        icon="chevron-left"
         v-model="form.value1"
         regex-validation="gender"
         :is-required="formRequired.value1"
@@ -41,6 +42,8 @@
         display-by="name"
       />
 
+      <a-icon icon="chevron-left" size="15" color="red" />
+
       <button :disabled="isDisabled">
         BOTÃO BOLADÃO FIRMÃO ESTÁ: {{ formFilled && hasErrors && formDirty }}
       </button>
@@ -57,8 +60,9 @@ export default {
   mixins: [formValidations()],
 
   components: {
-    AInput: () => import('./components/Ainput'),
-    ASelect: () => import('./components/ASelect')
+    AInput: () => import('./components/AInput'),
+    ASelect: () => import('./components/ASelect'),
+    AIcon: () => import('./components/AIcon')
   },
 
   data () {
