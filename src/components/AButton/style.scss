@@ -155,5 +155,9 @@ $c-xl-button-height: 48px;
     border: none;
   }
 
+  &.-disabled {
+    background-color: red;
+  }
+
   &.-border-only { background-color: transparent; }
 }

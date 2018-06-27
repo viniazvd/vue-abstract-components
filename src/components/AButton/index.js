@@ -22,7 +22,8 @@ const index = {
           '-icon': !!this.icon,
           '-icon-only': !this.hasText && this.icon,
           '-block': this.block,
-          '-ghost': this.ghost
+          '-ghost': this.ghost,
+          '-disabled': this.disabled
         }
       ]
     },
