@@ -1,8 +1,9 @@
-.a-input-component {
+.a-input {
   max-width: 400px;
+  position: relative;
 
   & > .label { text-transform: uppercase; }
-  & > .input { position: relative; }
+  & > .input {}
   & > .c-icon {}
   & > .error { display: flex; padding-top: 5px; }
   & > .textarea {}
