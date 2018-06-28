@@ -1,35 +1,23 @@
 import props from './props'
+import makeIcon from './makeIcon'
 import './style.scss'
 
 import AIcon from '../AIcon'
 
 const index = {
+  functional: true,
+
   props,
 
-  computed: {
-    optionsIcon () {
-      return {
-        attrs: { class: 'icon' },
-        props: { icon: this.icon, iconSize: this.iconSize }
-      }
-    }
-  },
+  render (h, { props, children }) {
+    const text = [ h('span', { attrs: { class: 'text' } }, [ children ]) ]
 
-  methods: {
-    makeIcon (h) {
-      return this.icon ? [ h(AIcon, this.optionsIcon) ] : false
-    }
-  },
-
-  render (h) {
-    const text = [ h('span', { attrs: { class: 'text' } }, [this.$slots.default]) ]
-
-    return h(`h${this.size}`,
+    return h(`h${props.size}`,
       {
-        style: { color: this.color },
+        style: { color: props.color },
         attrs: { class: 'a-title' }
       },
-      [ this.makeIcon(h), ...text ])
+      [ makeIcon(h, { props })(AIcon), text ])
   }
 }
 
