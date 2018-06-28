@@ -58,8 +58,8 @@
     <a-toggle
       :value.sync="toggled"
       has-confirmation
-      checked="checked"
-      unchecked="unchecked"
+      checked="CHECKED"
+      unchecked="UNCHECKED"
       @toggled="handlerToggle"
     />
   </div>
@@ -75,7 +75,7 @@ export default {
 
   components: {
     ACard: () => import('./components/ACard'),
-    AInput: () => import('./components/Ainput'),
+    AInput: () => import('./components/AInput'),
     ASelect: () => import('./components/ASelect'),
     AButton: () => import('./components/AButton'),
     ATitle: () => import('./components/ATitle'),
