@@ -2,55 +2,57 @@
   <div id="app">
     <a-title size="1" color="red" icon="bug">COE MANÉÉÉÉ</a-title>
 
-    <form @submit.prevent="submit">
-      <a-input
-        name="value1"
-        label="Gender"
-        icon="bug"
-        v-model="form.value1"
-        regex-validation="gender"
-        :is-required="formRequired.value1"
-        :is-touched.sync="formTouched.value1"
-        @error="syncError"
-      />
+    <a-card>
+      <form @submit.prevent="submit">
+        <a-input
+          name="value1"
+          label="Gender"
+          icon="bug"
+          v-model="form.value1"
+          regex-validation="gender"
+          :is-required="formRequired.value1"
+          :is-touched.sync="formTouched.value1"
+          @error="syncError"
+        />
 
-      <a-input name="value2" label="coe" v-model="form.value2" text-area />
+        <a-input name="value2" label="coe" v-model="form.value2" text-area />
 
-      <a-input
-        name="value3"
-        label="E-mail"
-        v-model="form.value3"
-        regex-validation="email"
-        :is-required="formRequired.value3"
-        :is-touched.sync="formTouched.value3"
-        @error="syncError"
-      />
+        <a-input
+          name="value3"
+          label="E-mail"
+          v-model="form.value3"
+          regex-validation="email"
+          :is-required="formRequired.value3"
+          :is-touched.sync="formTouched.value3"
+          @error="syncError"
+        />
 
-      <a-input
-        name="value4"
-        label="Date"
-        v-model="form.value4"
-        mask="##/##/####"
-        :is-required="formRequired.value4"
-        :is-touched.sync="formTouched.value4"
-      />
+        <a-input
+          name="value4"
+          label="Date"
+          v-model="form.value4"
+          mask="##/##/####"
+          :is-required="formRequired.value4"
+          :is-touched.sync="formTouched.value4"
+        />
 
-      <a-select
-        label="Mané"
-        placeholder="Seleciona eu aí lek"
-        v-model="form.value5"
-        :options="options"
-        track-by="id"
-        display-by="name"
-      />
+        <a-select
+          label="Mané"
+          placeholder="Seleciona eu aí lek"
+          v-model="form.value5"
+          :options="options"
+          track-by="id"
+          display-by="name"
+        />
 
-      <a-button primary icon="bug" :disabled="isDisabled">EN-VIADO</a-button>
-    </form>
+        <a-button primary icon="bug" :disabled="isDisabled">EN-VIADO</a-button>
+      </form>
+    </a-card>
 
     <a-stepper :current="1" :total="3" />
 
     <a-click-outside :handler="handleClickOutside">
-      <button>don't click me, click outside!</button>
+      <a-button icon="pencil">don't click me, click outside!</a-button>
     </a-click-outside>
   </div>
 </template>
@@ -64,6 +66,7 @@ export default {
   mixins: [formValidations()],
 
   components: {
+    ACard: () => import('./components/ACard'),
     AInput: () => import('./components/Ainput'),
     ASelect: () => import('./components/ASelect'),
     AButton: () => import('./components/AButton'),
