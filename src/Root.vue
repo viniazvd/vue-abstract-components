@@ -46,6 +46,8 @@
 
       <a-button primary icon="bug" :disabled="isDisabled">EN-VIADO</a-button>
     </form>
+
+    <a-stepper :current="1" :total="3" />
   </div>
 </template>
 
@@ -62,7 +64,7 @@ export default {
     ASelect: () => import('./components/ASelect'),
     AButton: () => import('./components/AButton'),
     ATitle: () => import('./components/ATitle'),
-    AIcon: () => import('./components/AIcon')
+    AStepper: () => import('./components/AStepper')
   },
 
   data () {
