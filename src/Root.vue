@@ -52,7 +52,7 @@
     <a-stepper :current="1" :total="3" />
 
     <a-click-outside :handler="handleClickOutside">
-      <a-button icon="pencil">don't click me, click outside!</a-button>
+      <a-button icon="bug">don't click me, click outside!</a-button>
     </a-click-outside>
 
     <a-toggle
