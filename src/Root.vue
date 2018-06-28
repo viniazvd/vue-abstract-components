@@ -48,6 +48,10 @@
     </form>
 
     <a-stepper :current="1" :total="3" />
+
+    <a-click-outside :handler="handleClickOutside">
+      <button>don't click me, click outside!</button>
+    </a-click-outside>
   </div>
 </template>
 
@@ -64,7 +68,8 @@ export default {
     ASelect: () => import('./components/ASelect'),
     AButton: () => import('./components/AButton'),
     ATitle: () => import('./components/ATitle'),
-    AStepper: () => import('./components/AStepper')
+    AStepper: () => import('./components/AStepper'),
+    AClickOutside: () => import('./components/AClickOutside')
   },
 
   data () {
@@ -94,6 +99,10 @@ export default {
           alert('COE, FOI MANÉ!')
         }
       })
+    },
+
+    handleClickOutside (e) {
+      console.log('hey, why did you touch outside?')
     }
   }
 }
