@@ -54,6 +54,14 @@
     <a-click-outside :handler="handleClickOutside">
       <a-button icon="pencil">don't click me, click outside!</a-button>
     </a-click-outside>
+
+    <a-toggle
+      :value.sync="toggled"
+      has-confirmation
+      checked="checked"
+      unchecked="unchecked"
+      @toggled="handlerToggle"
+    />
   </div>
 </template>
 
@@ -72,7 +80,8 @@ export default {
     AButton: () => import('./components/AButton'),
     ATitle: () => import('./components/ATitle'),
     AStepper: () => import('./components/AStepper'),
-    AClickOutside: () => import('./components/AClickOutside')
+    AClickOutside: () => import('./components/AClickOutside'),
+    AToggle: () => import('./components/AToggle')
   },
 
   data () {
@@ -89,7 +98,8 @@ export default {
         { id: 1, name: 'name-coe1', label: 'label-coe1' },
         { id: 2, name: 'name-coe2', label: 'label-coe2' },
         { id: 3, name: 'name-coe3', label: 'label-coe3' }
-      ]
+      ],
+      toggled: false
     }
   },
 
@@ -105,7 +115,12 @@ export default {
     },
 
     handleClickOutside (e) {
-      console.log('hey, why did you touch outside?')
+      console.log('why did you touch outside?')
+    },
+
+    handlerToggle (e) {
+      const confirmed = confirm('confirma msm, bicho?')
+      if (confirmed) this.toggled = !this.toggled
     }
   }
 }
