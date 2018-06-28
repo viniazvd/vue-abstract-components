@@ -1,4 +1,4 @@
-  const computed = {
+const computed = {
   hasRequiredError () {
     return this.isTouched && !this.isRequired && !this.isFilled
   },
