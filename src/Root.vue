@@ -16,7 +16,7 @@
       @toggled="handlerToggle"
     />
 
-    <button @click="isOpen = !isOpen">Toggle Modal</button>
+    <a-button @click="isOpen = !isOpen">OPEN FORM BOLADAO</a-button>
     <a-modal :is-open="isOpen" @close="isOpen = !isOpen">
       <a-card>
         <form @submit.prevent="submit">
