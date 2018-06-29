@@ -4,9 +4,11 @@
 
     <a-stepper :current="1" :total="3" />
 
-    <!-- <a-click-outside :handler="handleClickOutside">
+    <a-click-outside :handler="handleClickOutside">
       <a-button icon="bug">click outside!</a-button>
-    </a-click-outside> -->
+    </a-click-outside>
+
+    <a-spinner size="md" />
 
     <a-toggle
       :value.sync="toggled"
@@ -85,7 +87,8 @@ export default {
     AStepper: () => import('./components/AStepper'),
     AClickOutside: () => import('./components/AClickOutside'),
     AToggle: () => import('./components/AToggle'),
-    AModal: () => import('./components/AModal')
+    AModal: () => import('./components/AModal'),
+    ASpinner: () => import('./components/ASpinner')
   },
 
   data () {

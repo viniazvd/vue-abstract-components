@@ -1,0 +1,52 @@
+$a-spinner-sizes:( sm: 31, md: 62, lg: 125 );
+$a-spinner-color: blue !default;
+
+.a-spinner {
+  animation: 1.4s circle-rotate linear infinite;
+}
+
+.a-spinner-circle {
+  stroke: $a-spinner-color;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  fill: none;
+
+  @each $class, $size in $a-spinner-sizes {
+    &.-#{$class} {
+      stroke-dasharray: $size;
+      animation:
+        5s circle-#{$class}-dash ease-in-out infinite,
+        5s circle-spin ease-in-out infinite;
+    }
+  }
+}
+
+@keyframes circle-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes circle-spin {
+  12.5% { transform: rotate(0deg); }
+  25% { transform: rotate(240deg); }
+  37.5% { transform: rotate(240deg); }
+  50% { transform: rotate(540deg); }
+  62.5% { transform: rotate(540deg); }
+  75% { transform: rotate(780deg); }
+  87.5% { transform: rotate(780deg); }
+  100% { transform: rotate(1080deg); }
+}
+
+@each $class, $size in $a-spinner-sizes {
+  @keyframes circle-#{$class}-dash {
+    0% { stroke-dashoffset: $size; }
+    12.5% { stroke-dashoffset: $size/4; }
+    25% { stroke-dashoffset: $size; }
+    37.5% { stroke-dashoffset: $size/4; }
+    50% { stroke-dashoffset: $size; }
+    62.5% { stroke-dashoffset: $size/4; }
+    75% { stroke-dashoffset: $size; }
+    87.5% { stroke-dashoffset: $size/4; }
+    100% { stroke-dashoffset: $size; }
+  }
+}
