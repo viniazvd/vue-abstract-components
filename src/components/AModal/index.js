@@ -12,10 +12,12 @@ const index = {
 
   mounted () {
     document.addEventListener('click', this.clickOutside, true)
+    document.addEventListener('keydown', this.clickEscape, true)
   },
 
   beforeDestroy () {
     document.removeEventListener('click', this.clickOutside, true)
+    document.removeEventListener('keydown', this.clickEscape, true)
   },
 
   methods: {
@@ -25,6 +27,10 @@ const index = {
 
       if ((!!el && el.contains(e.target)) ||
          (!!close && close.contains(e.target))) this.$emit('close')
+    },
+
+    clickEscape (e) {
+      if (e.key === 'Escape') this.$emit('close')
     }
   },
 
