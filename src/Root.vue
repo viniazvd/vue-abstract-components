@@ -51,9 +51,9 @@
 
     <a-stepper :current="1" :total="3" />
 
-    <a-click-outside :handler="handleClickOutside">
-      <a-button icon="bug">don't click me, click outside!</a-button>
-    </a-click-outside>
+    <!-- <a-click-outside :handler="handleClickOutside">
+      <a-button icon="bug">click outside!</a-button>
+    </a-click-outside> -->
 
     <a-toggle
       :value.sync="toggled"
@@ -62,6 +62,12 @@
       unchecked="UNCHECKED"
       @toggled="handlerToggle"
     />
+
+    <button @click="isOpen = !isOpen">Toggle Modal</button>
+    <a-modal :is-open="isOpen" @close="isOpen = !isOpen">
+      <h2>title</h2>
+      <p>text goes here...</p>
+    </a-modal>
   </div>
 </template>
 
@@ -81,7 +87,8 @@ export default {
     ATitle: () => import('./components/ATitle'),
     AStepper: () => import('./components/AStepper'),
     AClickOutside: () => import('./components/AClickOutside'),
-    AToggle: () => import('./components/AToggle')
+    AToggle: () => import('./components/AToggle'),
+    AModal: () => import('./components/AModal')
   },
 
   data () {
@@ -99,7 +106,8 @@ export default {
         { id: 2, name: 'name-coe2', label: 'label-coe2' },
         { id: 3, name: 'name-coe3', label: 'label-coe3' }
       ],
-      toggled: false
+      toggled: false,
+      isOpen: false
     }
   },
 
@@ -115,12 +123,16 @@ export default {
     },
 
     handleClickOutside (e) {
-      console.log('why did you touch outside?')
+      // console.log('why did you touch outside?')
     },
 
     handlerToggle (e) {
       const confirmed = confirm('confirma msm, bicho?')
       if (confirmed) this.toggled = !this.toggled
+    },
+
+    toggle (e) {
+      this.isOpen = !this.isOpen
     }
   }
 }

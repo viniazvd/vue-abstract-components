@@ -25,6 +25,6 @@ export default {
   },
 
   render (h) {
-    return h('div', { ref: 'container' }, this.$slots.default)
+    return h('span', { ref: 'container' }, this.$slots.default)
   }
 }

@@ -1,8 +1,10 @@
 import './style.scss'
 
 const index = {
-  render (h) {
-    return h('div', { class: 'a-card' }, [this.$slots.default])
+  functional: true,
+
+  render (h, { children }) {
+    return h('div', { class: 'a-card' }, children)
   }
 }
 
