@@ -2,6 +2,8 @@ import props from './props'
 import computed from './computed'
 import methods from './methods'
 
+import './style.scss'
+
 const index = {
   name: 'a-tabs',
 
