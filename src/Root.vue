@@ -2,6 +2,12 @@
   <div id="app">
     <a-title size="1" color="red" icon="bug">COE MANÉÉÉÉ</a-title>
 
+    <tabs>
+      <tab title="COE">COE SELECIONADO</tab>
+      <tab title="MANÉ">MANÉ SELECIONADO</tab>
+      <tab title="BOLADAO">BOLADAO SELECIONADO</tab>
+    </tabs>
+
     <a-stepper :current="1" :total="3" />
 
     <a-click-outside :handler="handleClickOutside">
@@ -71,6 +77,8 @@
 </template>
 
 <script>
+import { Tabs, Tab } from './components/ATabber'
+
 import formValidations from './support/mixins/formValidations'
 
 export default {
@@ -88,7 +96,9 @@ export default {
     AClickOutside: () => import('./components/AClickOutside'),
     AToggle: () => import('./components/AToggle'),
     AModal: () => import('./components/AModal'),
-    ASpinner: () => import('./components/ASpinner')
+    ASpinner: () => import('./components/ASpinner'),
+    Tabs,
+    Tab
   },
 
   data () {
