@@ -1,5 +1,4 @@
 import './style.scss'
-import ACard from '../ACard'
 
 const index = {
   name: 'a-modal',
@@ -21,18 +20,24 @@ const index = {
 
   methods: {
     clickOutside (e) {
-      const el = this.$refs.container
+      const el = this.$refs.overlay
+      const close = this.$refs.close
 
-      if (!!el && !el.contains(e.target) && !this.isOpen) this.$emit('close')
+      if ((!!el && el.contains(e.target)) ||
+         (!!close && close.contains(e.target))) this.$emit('close')
     }
   },
 
   render (h) {
     if (!this.isOpen) return false
 
-    const slot = [ h(ACard, { attrs: { class: 'slot-container' } }, this.$slots.default) ]
+    const overlay = h('div', { staticClass: 'overlay', ref: 'overlay' })
 
-    return h('div', { ref: 'container', staticClass: 'a-modal' }, slot)
+    const slot = h('div', { staticClass: 'slot-content' }, this.$slots.default)
+    const close = h('div', { staticClass: 'close-button', ref: 'close' }, 'X')
+    const modal = h('div', { staticClass: 'modal' }, [ close, slot ])
+
+    return h('div', { ref: 'container', staticClass: 'a-modal' }, [ overlay, modal ])
   }
 }
 
