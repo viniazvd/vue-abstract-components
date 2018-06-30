@@ -8,17 +8,11 @@ const computed = {
   },
 
   className () {
-    return [
-      'vue-popover',
-      this.pointer && this.positionClass
-    ]
+    return [ 'a-popover', this.pointer && this.positionClass ]
   },
 
   style () {
-    return {
-      width: `${this.width}px`,
-      ...this.position
-    }
+    return { width: `${this.width}px`, ...this.position }
   },
 
   optionsPopover () {
