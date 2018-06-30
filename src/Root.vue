@@ -73,6 +73,12 @@
         </form>
       </a-card>
     </a-modal>
+
+    <button v-popover.top="{ name: 'foo' }">Toggle popover</button>
+
+    <popover name="foo">
+      OPIA hehehe
+    </popover>
   </div>
 </template>
 

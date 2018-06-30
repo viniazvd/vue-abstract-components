@@ -49,8 +49,7 @@ const props = {
     default: false
   },
   placeholder: {
-    type: String,
-    default: ''
+    type: String
   },
   label: {
     type: String,

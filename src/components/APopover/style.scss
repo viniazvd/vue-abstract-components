@@ -1,0 +1,49 @@
+$pointer-size: 6px;
+.vue-popover {
+  display: block;
+  position: absolute;
+  background: #fff;
+  box-shadow: 0px 4px 20px 0px rgba(52, 73, 94, 0.2);
+  padding: 5px;
+  border-radius: 5px;
+  z-index: 998;
+  &:before {
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    content: '';
+  }
+  &.dropdown-position-bottom:before {
+    border-left: $pointer-size solid transparent;
+    border-right: $pointer-size solid transparent;
+    border-bottom: $pointer-size solid #fff;
+    top: -$pointer-size;
+    left: calc(50% - #{$pointer-size});
+    filter: drop-shadow(0px -2px 2px rgba(52, 73, 94, 0.1));
+  }
+  &.dropdown-position-top:before {
+    border-left: $pointer-size solid transparent;
+    border-right: $pointer-size solid transparent;
+    border-top: $pointer-size solid #fff;
+    bottom: -$pointer-size;
+    left: calc(50% - #{$pointer-size});
+    filter: drop-shadow(0px 2px 2px rgba(52, 73, 94, 0.1));
+  }
+  &.dropdown-position-left:before {
+    border-top: $pointer-size solid transparent;
+    border-bottom: $pointer-size solid transparent;
+    border-left: $pointer-size solid #fff;
+    right: -$pointer-size;
+    top: calc(50% - #{$pointer-size});
+    filter: drop-shadow(2px 0px 2px rgba(52, 73, 94, 0.1));
+  }
+  &.dropdown-position-right:before {
+    border-top: $pointer-size solid transparent;
+    border-bottom: $pointer-size solid transparent;
+    border-right: $pointer-size solid #fff;
+    left: -$pointer-size;
+    top: calc(50% - #{$pointer-size});
+    filter: drop-shadow(-2px 0px 2px rgba(52, 73, 94, 0.1));
+  }
+}
