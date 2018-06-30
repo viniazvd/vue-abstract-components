@@ -36,7 +36,7 @@ const index = {
     },
 
     clickEscape (e) {
-      if (e.key === 'Escape') this.$emit('close')
+      if (e.key === 'Escape' && this.isOpen) this.$emit('close')
     }
   },
 
