@@ -1,9 +1,8 @@
 import props from './props'
 import computed from './computed'
 import methods from './methods'
-import directive from './directive'
 
-import { events } from './bus'
+import { events } from '../../support/bus'
 
 import './style.scss'
 
@@ -44,14 +43,16 @@ const popover = {
   }
 }
 
-export default {
-  install (Vue, params = {}) {
-    document.addEventListener('resize', (event) => {
-      events.$emit('hide', { srcEvent: event })
-    })
+export default popover
 
-    Vue.component('Popover', popover)
+// export default {
+//   install (Vue, params = {}) {
+//     document.addEventListener('resize', (event) => {
+//       events.$emit('hide', { srcEvent: event })
+//     })
 
-    Vue.directive('popover', directive)
-  }
-}
+//     Vue.component('Popover', popover)
+
+//     Vue.directive('popover', directive)
+//   }
+// }

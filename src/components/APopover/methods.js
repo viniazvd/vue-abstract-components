@@ -1,4 +1,4 @@
-import { events } from './bus'
+import { events } from '../../support/bus'
 
 const pointerSize = 6
 const directions = {

@@ -1,14 +1,18 @@
+// vue instance
 import Vue from 'vue'
+
+// entry component app
 import Root from './Root.vue'
 
+// plugins
 import plugins from './support/plugins'
-import Popover from './components/APopover'
 
-Vue.use(Popover)
+// directives
+import popover from './support/directives/popover'
+
+Vue.directive('popover', popover)
 Vue.use(plugins)
 
 Vue.config.productionTip = false
 
-new Vue({
-  render: h => h(Root)
-}).$mount('#app')
+new Vue({ render: h => h(Root) }).$mount('#app')

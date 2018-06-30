@@ -76,14 +76,15 @@
 
     <button v-popover.top="{ name: 'foo' }">Toggle popover</button>
 
-    <popover name="foo">
+    <a-popover name="foo">
       OPIA hehehe
-    </popover>
+    </a-popover>
   </div>
 </template>
 
 <script>
 import { Tabs, Tab } from './components/ATabber'
+// import Popover from './components/APopover'
 
 import formValidations from './support/mixins/formValidations'
 
@@ -103,6 +104,7 @@ export default {
     AToggle: () => import('./components/AToggle'),
     AModal: () => import('./components/AModal'),
     ASpinner: () => import('./components/ASpinner'),
+    APopover: () => import('./components/APopover'),
     Tabs,
     Tab
   },

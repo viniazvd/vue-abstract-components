@@ -1,4 +1,4 @@
-import { events } from './bus'
+import { events } from '../bus'
 
 const defaultPosition = 'bottom'
 
@@ -48,7 +48,7 @@ const addHoverEventListener = (target, params) => {
   }
 }
 
-const directive = {
+const popover = {
   bind: function (target, binding) {
     let params = prepareBinding(binding)
 
@@ -61,4 +61,4 @@ const directive = {
   }
 }
 
-export default directive
+export default popover
