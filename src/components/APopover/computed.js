@@ -19,7 +19,7 @@ const computed = {
     return {
       class: this.className,
       style: this.style,
-      attrs: { 'data-popover': this.name },
+      attrs: { 'popover': this.name },
       on: {
         click (event) {
           event.stopPropagation()
