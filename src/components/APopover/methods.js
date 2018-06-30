@@ -19,7 +19,7 @@ const methods = {
       let { target, name, position } = event
       if (name === this.name) {
         let direction = directions[position]
-        this.positionClass = `dropdown-position-${position}`
+        this.positionClass = `position-${position}`
         this.visible = true
         this.$nextTick(() => {
           this.$emit('show', event)
