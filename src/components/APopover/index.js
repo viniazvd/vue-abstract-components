@@ -23,13 +23,17 @@ const popover = {
   },
 
   mounted () {
-    events.$on(this.showEventName, this.showEventListener)
-    events.$on(this.hideEventName, this.hideEventListener)
+    document.addEventListener('keydown', this.clickEscape, true)
+
+    events.$on('show:click', this.showEventListener)
+    events.$on('hide:click', this.hideEventListener)
   },
 
   beforeDestroy () {
-    events.$off(this.showEventName, this.showEventListener)
-    events.$off(this.hideEventName, this.hideEventListener)
+    document.removeEventListener('keydown', this.clickEscape, true)
+
+    events.$off('show:click', this.showEventListener)
+    events.$off('hide:click', this.hideEventListener)
   },
 
   computed,

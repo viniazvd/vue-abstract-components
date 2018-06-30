@@ -1,6 +1,6 @@
 import { events } from '../../support/bus'
 
-const pointerSize = 6
+const pointerSize = 5
 const directions = {
   left: [-1, 0],
   right: [1, 0],
@@ -17,6 +17,7 @@ const methods = {
 
     this.$nextTick(() => {
       let { target, name, position } = event
+
       if (name === this.name) {
         let direction = directions[position]
         this.positionClass = `position-${position}`
@@ -36,6 +37,13 @@ const methods = {
 
   hideEventListener (event) {
     if (this.visible) {
+      this.visible = false
+      this.$emit('hide', event)
+    }
+  },
+
+  clickEscape (event) {
+    if (event.key === 'Escape') {
       this.visible = false
       this.$emit('hide', event)
     }
