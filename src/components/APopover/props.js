@@ -5,20 +5,11 @@ const props = {
   },
   width: {
     type: Number,
-    default: 180
+    default: 300
   },
-  pointer: {
-    type: Boolean,
-    default: true
-  },
-  event: {
-    type: String,
-    default: 'click'
-  },
-  anchor: {
+  height: {
     type: Number,
-    default: 0.5,
-    validator: (v) => v >= 0 && v <= 1
+    default: 300
   }
 }
 
