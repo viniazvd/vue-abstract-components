@@ -30,33 +30,13 @@ const addClickEventListener = (target, params) => {
   }
 }
 
-const addHoverEventListener = (target, params) => {
-  const mouseenter = (srcEvent) => {
-    events.$emit('show:hover', { ...params, target, srcEvent })
-  }
-
-  const mouseleave = (srcEvent) => {
-    events.$emit('hide:hover', { ...params, target, srcEvent })
-  }
-
-  target.addEventListener('mouseenter', mouseenter)
-  target.addEventListener('mouseleave', mouseleave)
-
-  target.$popoverRemoveHoverHandlers = () => {
-    target.removeEventListener('mouseenter', mouseenter)
-    target.removeEventListener('mouseleave', mouseleave)
-  }
-}
-
 const popover = {
   bind: function (target, binding) {
     let params = prepareBinding(binding)
 
     addClickEventListener(target, params)
-    addHoverEventListener(target, params)
   },
   unbind: function (target, binding) {
-    target.$popoverRemoveHoverHandlers()
     target.$popoverRemoveClickHandlers()
   }
 }
