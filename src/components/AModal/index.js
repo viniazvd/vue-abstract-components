@@ -20,6 +20,12 @@ const index = {
     document.removeEventListener('keydown', this.clickEscape, true)
   },
 
+  watch: {
+    $route () {
+      this.$emit('close')
+    }
+  },
+
   methods: {
     clickOutside (e) {
       const el = this.$refs.overlay
