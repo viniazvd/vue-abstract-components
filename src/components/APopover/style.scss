@@ -1,5 +1,6 @@
 $pointer-size: 6px;
-.vue-popover {
+
+.a-popover {
   display: block;
   position: absolute;
   background: #fff;
@@ -7,6 +8,7 @@ $pointer-size: 6px;
   padding: 5px;
   border-radius: 5px;
   z-index: 998;
+
   &:before {
     display: block;
     position: absolute;
@@ -14,6 +16,7 @@ $pointer-size: 6px;
     height: 0;
     content: '';
   }
+
   &.dropdown-position-bottom:before {
     border-left: $pointer-size solid transparent;
     border-right: $pointer-size solid transparent;
@@ -22,6 +25,7 @@ $pointer-size: 6px;
     left: calc(50% - #{$pointer-size});
     filter: drop-shadow(0px -2px 2px rgba(52, 73, 94, 0.1));
   }
+
   &.dropdown-position-top:before {
     border-left: $pointer-size solid transparent;
     border-right: $pointer-size solid transparent;
@@ -30,6 +34,7 @@ $pointer-size: 6px;
     left: calc(50% - #{$pointer-size});
     filter: drop-shadow(0px 2px 2px rgba(52, 73, 94, 0.1));
   }
+
   &.dropdown-position-left:before {
     border-top: $pointer-size solid transparent;
     border-bottom: $pointer-size solid transparent;
@@ -38,6 +43,7 @@ $pointer-size: 6px;
     top: calc(50% - #{$pointer-size});
     filter: drop-shadow(2px 0px 2px rgba(52, 73, 94, 0.1));
   }
+
   &.dropdown-position-right:before {
     border-top: $pointer-size solid transparent;
     border-bottom: $pointer-size solid transparent;
