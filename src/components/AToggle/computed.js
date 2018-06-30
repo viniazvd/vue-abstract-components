@@ -40,8 +40,6 @@ const computed = {
   },
 
   optionsCheckbox () {
-    const self = this
-
     return {
       domProps: {
         checked: this.value
@@ -51,10 +49,10 @@ const computed = {
         type: 'checkbox'
       },
       on: {
-        click ($event) {
-          $event.stopPropagation()
+        click: (e) => {
+          e.stopPropagation()
 
-          return self.toggle()
+          return this.toggle()
         }
       }
     }
