@@ -1,23 +1,15 @@
 const computed = {
-  showEventName () {
-    return `show:${this.event}`
-  },
-
-  hideEventName () {
-    return `hide:${this.event}`
-  },
-
-  className () {
-    return [ 'a-popover', this.pointer && this.positionClass ]
-  },
-
   style () {
-    return { width: `${this.width}px`, ...this.position }
+    return {
+      width: `${this.width}px`,
+      height: `${this.height}px`,
+      ...this.position
+    }
   },
 
   optionsPopover () {
     return {
-      class: this.className,
+      staticClass: 'a-popover',
       style: this.style,
       attrs: { 'popover': this.name },
       on: {
