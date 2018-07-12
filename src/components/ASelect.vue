@@ -1,17 +1,20 @@
 <template>
+  <!-- add input container here -->
   <div
-    :class="['a-select', { 'label-margin': label }]"
+    :class="['a-select', { '-label-margin': label, '-opened': this.isOpened, '-closed': !this.isOpened }]"
     v-click-outside="close"
     @click="isOpened = !isOpened"
   >
     <span class="label">{{ label }}</span>
 
     <section :class="selectedClasses">
+      <a-icon v-if="icon" :icon="icon" size="15" class="icon" />
+
       <slot :selected="value">
         <span class="text">{{ selected }}</span>
 
         <slot name="select-icon">
-          <a-icon v-if="icon" class="icon" size="15" :icon="iconHandler" />
+          <a-icon v-if="selectIcon" class="select-icon" size="15" :icon="iconHandler" />
         </slot>
       </slot>
     </section>
@@ -26,7 +29,7 @@
         >
           <slot name="option" :option="option">
             <p :class="['text', { 'selected': isSelected === index }]">
-              {{ displayBy ? option[displayBy] : option }}
+              {{ getItem(option) }}
             </p>
           </slot>
         </div>
@@ -40,15 +43,7 @@ import AIcon from './AIcon'
 import clickOutside from '../support/directives/clickOutside'
 
 export default {
-  name: 'a-select',
-
   components: { AIcon },
-
-  data () {
-    return {
-      isOpened: false
-    }
-  },
 
   props: {
     label: String,
@@ -57,13 +52,23 @@ export default {
       required: true
     },
     trackBy: String,
-    icon: {
+    displayBy: String,
+    icon: String,
+    selectIcon: {
       type: String,
       default: 'chevron-down'
     },
-    displayBy: String,
-    placeholder: String,
+    placeholder: {
+      type: String,
+      default: 'Selecione uma opção'
+    },
     value: [Object, String]
+  },
+
+  data () {
+    return {
+      isOpened: false
+    }
   },
 
   directives: { clickOutside },
@@ -71,49 +76,79 @@ export default {
   computed: {
     selected: {
       get () {
-        return this.value
-          ? this.displayBy ? this.value[this.displayBy] : this.value
-          : '' || this.placeholder
+        const value = this.options
+          .find(option => Object.values(option)
+            .find(v => v === this.value[this.displayBy]))
+
+        if (this.value) {
+          if (this.displayBy && value[this.displayBy]) {
+            if (value[this.displayBy]) {
+              return value[this.displayBy]
+            } else {
+              if (process.env.NODE_ENV === 'development') {
+                console.error('displayBy prop does not exist')
+                return 'error: displayBy prop does not exist'
+              } else {
+                return ''
+              }
+            }
+          } else {
+            return this.value
+          }
+        }
+
+        return this.placeholder || ''
       },
-      set (value) {
-        this.$emit('update', value)
-        this.$emit('input', value)
-        this.$emit('change', value)
+      set (item) {
+        // const tracked = this.trackBy ? item[this.trackBy] : item
+        // this.$emit('input', tracked)
+
+        this.$emit('input', item)
       }
     },
 
     selectedClasses () {
       return [ 'selected', {
-        '-default': !(this.$slots.default || this.$scopedSlots.default)
+        '-slot': this.$slots.default || this.$scopedSlots.default
       }]
     },
 
     optionsClasses () {
       return [ 'options', {
-        '-default': !(this.$slots.options || this.$scopedSlots.options)
+        '-slot': this.$slots.options || this.$scopedSlots.options
       }]
     },
 
     optionClasses () {
       return [ 'option', {
-        '-default': !(this.$slots.option || this.$scopedSlots.option)
+        '-slot': this.$slots.option || this.$scopedSlots.option
       }]
     },
 
     isSelected () {
-      const position = option => this.trackBy
-        ? this.value[this.trackBy] === option[this.trackBy]
-        : this.value === option
-
-      return this.options.findIndex(position)
+      return this.options.findIndex(option => {
+        return this.trackBy
+          ? this.value[this.trackBy] === option[this.trackBy]
+          : this.value === option
+      })
     },
 
     iconHandler () {
-      return this.isOpened ? 'bug' : 'chevron-up'
+      return this.isOpened ? 'chevron-down' : 'chevron-up'
     }
   },
 
   methods: {
+    getItem (option) {
+      if (this.displayBy) {
+        return option[this.displayBy]
+          ? option[this.displayBy]
+          : process.env.NODE_ENV === 'development' ? 'error: displayBy prop does not exist' : ''
+      }
+
+      return option
+    },
+
     close () {
       this.isOpened = false
     }
@@ -122,51 +157,85 @@ export default {
 </script>
 
 <style lang="scss">
+// @import '../styles/index.scss';
+
 .a-select {
-  height: 30px;
-  background-color: white;
-  border: 1px solid lightgray;
+  width: 300px; // tirar dps!
+  // border: 1px solid map-get($text-color, base-10);
   position: relative;
+  border: 1px solid rgba(18,30,72,0.1);
+  border-radius: 5px;
 
   & > .label {
     position: absolute;
     top: -20px;
   }
 
-  & > .selected.-default {
-    background-color: lightgrey;
-    height: 100%;
+  & > .selected {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding-left: 10px;
+    justify-content: flex-start;
+    padding-left: 15px;
+    height: 40px;
 
-    & > .icon { padding-right: 10px; }
+    & > .icon { padding-right: 15px; }
+
+    & > .text {
+      opacity: 0.3;
+      color: #121E48;
+      font-family: "Nunito Sans";
+      font-size: 14px;
+    }
+
+    & > .select-icon {
+      margin-left: auto;
+      padding-right: 15px;
+    }
   }
 
-  & > .options.-default {
+  & > .options {
     position: absolute;
     left: 0;
     top: 100%;
     width: 100%;
-    background-color: white;
+    background-color: #fff;
     z-index: 1;
     transform: translate(0, 0);
+    background: linear-gradient(180deg, #FFFFFF 0%, rgba(255,255,255,0.83) 100%);
+    box-shadow: 0 2px 6px 0 rgba(0,0,0,0.2);
 
-    & > .option.-default {
-      border: 1px solid darkgray;
-      height: 30px;
+    & > .option {
       display: flex;
       align-items: center;
-      padding-left: 10px;
+      padding-left: 15px;
+      height: 39px;
+      border-bottom: 1px solid gray;
       cursor: pointer;
 
-      & > .text { color: black; }
+      &:hover {
+        background-color: grey;
+      }
+
+      & > .text {
+        opacity: 0.8;
+        color: #121E48;
+        font-family: "Nunito Sans";
+        font-size: 14px;
+      }
+
       & > .selected { color: red; }
     }
   }
-}
-.label-margin {
-  margin-top: 20px;
+
+  &.-label-margin {
+    margin-top: 20px;
+  }
+
+  &.-closed:hover { border: 1px solid purple; }
+
+  &.-opened:hover {
+    background: linear-gradient(180deg, #FFFFFF 0%, rgba(255,255,255,0.83) 100%);
+    box-shadow: 0 2px 6px 0 rgba(0,0,0,0.2);
+  }
 }
 </style>

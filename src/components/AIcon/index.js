@@ -28,9 +28,9 @@ const index = {
     }())
 
     const aIcon = [ h(Icon, {
+      staticClass: 'c-icon',
       style: { fill: context.props.color },
       attrs: {
-        class: 'c-icon',
         icon: context.props.icon,
         width: context.props.size,
         height: context.props.size

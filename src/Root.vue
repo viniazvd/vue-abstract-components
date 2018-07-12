@@ -15,6 +15,7 @@
     </a-click-outside>
 
     <a-spinner size="md" />
+    <a-spinner size="md" slot="message">COE, its me</a-spinner>
 
     <a-toggle
       :value.sync="toggled"
@@ -31,7 +32,7 @@
           <a-input
             name="value1"
             label="Gender"
-            icon="bug"
+            icon="chevron-down"
             v-model="form.value1"
             regex-validation="gender"
             :is-required="formRequired.value1"
@@ -62,19 +63,19 @@
 
           <a-select
             label="Mané"
-            placeholder="Seleciona eu aí lek"
+            icon="bug"
             v-model="form.value5"
             :options="options"
-            track-by="id"
             display-by="name"
+            track-by="id"
           />
 
-          <a-button primary icon="bug" :disabled="isDisabled">EN-VIADO</a-button>
+          <button :disabled="isDisabled">EN-VIADO</button>
         </form>
       </a-card>
     </a-modal>
 
-    <a-button alternative v-popover.bottom="{ name: 'coe' }">Toggle popover</a-button>
+    <a-button alternative v-popover.right="{ name: 'coe' }">Toggle popover</a-button>
 
     <a-popover name="coe">
       OPIA hehehe
@@ -84,7 +85,6 @@
 
 <script>
 import { Tabs, Tab } from './components/ATabber'
-// import Popover from './components/APopover'
 
 import formValidations from './support/mixins/formValidations'
 
@@ -120,7 +120,7 @@ export default {
         value5: ''
       },
       options: [
-        { id: 1, name: 'name-coe1', label: 'label-coe1' },
+        { id: 1, label: 'label-coe1' },
         { id: 2, name: 'name-coe2', label: 'label-coe2' },
         { id: 3, name: 'name-coe3', label: 'label-coe3' }
       ],
