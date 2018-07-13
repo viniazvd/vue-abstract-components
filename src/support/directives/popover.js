@@ -1,13 +1,15 @@
 import { events } from '../bus'
 
 const defaultPosition = 'bottom'
+const defaultAlign = 'center'
 
 const prepareBinding = ({ arg = '', modifiers = {}, value = {} }) => {
-  let mods = Object.keys(modifiers)
-  let name = typeof value === 'object' && value.name ? value.name : arg
-  let position = mods[0] || value.position || defaultPosition
+  const mods = Object.keys(modifiers)
+  const name = typeof value === 'object' && value.name ? value.name : arg
+  const position = mods[0] || value.position || defaultPosition
+  const align = value.align || defaultAlign
 
-  return { name, position, value }
+  return { name, position, align, value }
 }
 
 const addClickEventListener = (target, params) => {
@@ -32,7 +34,7 @@ const addClickEventListener = (target, params) => {
 
 const popover = {
   bind: function (target, binding) {
-    let params = prepareBinding(binding)
+    const params = prepareBinding(binding)
 
     addClickEventListener(target, params)
   },

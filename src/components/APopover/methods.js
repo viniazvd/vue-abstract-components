@@ -1,6 +1,5 @@
 import { events } from '../../support/bus'
 
-const pointerSize = 5
 const directions = {
   left: [-1, 0],
   right: [1, 0],
@@ -16,23 +15,62 @@ const methods = {
     }
 
     this.$nextTick(() => {
-      let { target, name, position } = event
+      const { target, name, position, align } = event
 
       if (name === this.name) {
-        let direction = directions[position]
+        const direction = directions[position]
         this.positionClass = `position-${position}`
+        this.alignClass = `align-${align}`
         this.visible = true
+
         this.$nextTick(() => {
           this.$emit('show', event)
 
           this.$nextTick(() => {
-            let position = this.getDropdownPosition(target, this.$refs.dropdown, direction)
+            const _position = this.getPosition(target, this.$refs.dropdown, direction, align)
 
-            this.position = { left: `${position.left}px`, top: `${position.top}px` }
+            if (align === 'right') { _position.left = 590 }
+            if (align === 'left') { _position.left = 450 }
+
+            this.position = { left: `${_position.left}px`, top: `${_position.top}px` }
           })
         })
       }
     })
+  },
+
+  getAlign (target) {
+
+  },
+
+  getPosition (target, dropdown, direction, align) {
+    const trRect = target.getBoundingClientRect()
+    const ddRect = dropdown.getBoundingClientRect()
+
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft
+
+    const offsetLeft = trRect.left + scrollLeft
+    const offsetTop = trRect.top + scrollTop
+
+    const shiftY = 0.5 * (ddRect.height + trRect.height)
+
+    const centerX = offsetLeft - 0.5 * (ddRect.width - trRect.width)
+    const centerY = offsetTop + trRect.height - shiftY
+
+    let x = 0
+    if (align === 'center') {
+      x = direction[0] * 0.5 * (ddRect.width + trRect.width)
+    } else if (align === 'left') {
+      console.log(ddRect.width + trRect.width)
+      x = direction[0] * 0.5 * (ddRect.width + trRect.width / 2)
+    } else {
+      x = direction[0] * 0.5 * (ddRect.width + trRect.width)
+    }
+
+    let y = direction[1] * shiftY
+
+    return { left: centerX + x, top: centerY - y }
   },
 
   hideEventListener (event) {
@@ -47,32 +85,6 @@ const methods = {
       this.visible = false
       this.$emit('hide', event)
     }
-  },
-
-  getDropdownPosition (target, dropdown, direction) {
-    let trRect = target.getBoundingClientRect()
-    let ddRect = dropdown.getBoundingClientRect()
-
-    let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-    let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft
-
-    let offsetLeft = trRect.left + scrollLeft
-    let offsetTop = trRect.top + scrollTop
-
-    let shiftY = 0.5 * (ddRect.height + trRect.height)
-
-    let centerX = offsetLeft - 0.5 * (ddRect.width - trRect.width)
-    let centerY = offsetTop + trRect.height - shiftY
-
-    let x = direction[0] * 0.5 * (ddRect.width + trRect.width)
-    let y = direction[1] * shiftY
-
-    if (this.pointer) {
-      x += direction[0] * pointerSize
-      y += direction[1] * pointerSize
-    }
-
-    return { left: centerX + x, top: centerY - y }
   }
 }
 
