@@ -20,15 +20,13 @@
     <section v-if="isOpened" :class="optionsClasses">
       <slot name="options" :options="options">
         <div
-          :class="optionClasses"
           v-for="(option, index) in options"
           :key="index"
+          :class="optionClasses"
           @click="selected = options[index]"
         >
           <slot name="option" :option="option">
-            <p class="text">
-              {{ getItem(option) }}
-            </p>
+            <p class="text">{{ getItem(option) }}</p>
             <span :class="{ 'selected': isSelected === index }"></span>
           </slot>
         </div>
