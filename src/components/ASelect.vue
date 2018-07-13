@@ -1,14 +1,12 @@
 <template>
   <!-- add input container here -->
-  <div
-    :class="['a-select', { '-label-margin': label, '-opened': this.isOpened, '-closed': !this.isOpened }]"
-    v-click-outside="close"
-    @click="isOpened = !isOpened"
-  >
+  <div :class="containerClasses" v-click-outside="close" @click="isOpened = !isOpened">
     <span class="label">{{ label }}</span>
 
     <section :class="selectedClasses">
-      <a-icon v-if="icon" :icon="icon" size="15" class="icon" />
+      <slot name="icon">
+        <a-icon v-if="icon" :icon="icon" size="15" class="icon" />
+      </slot>
 
       <slot :selected="value">
         <span class="text">{{ selected }}</span>
@@ -28,9 +26,10 @@
           @click="selected = options[index]"
         >
           <slot name="option" :option="option">
-            <p :class="['text', { 'selected': isSelected === index }]">
+            <p class="text">
               {{ getItem(option) }}
             </p>
+            <span :class="{ 'selected': isSelected === index }"></span>
           </slot>
         </div>
       </slot>
@@ -80,18 +79,13 @@ export default {
           .find(option => Object.values(option)
             .find(v => v === this.value[this.displayBy]))
 
+        if (!value) return 'Opção inválida'
+
         if (this.value) {
           if (this.displayBy && value[this.displayBy]) {
-            if (value[this.displayBy]) {
-              return value[this.displayBy]
-            } else {
-              if (process.env.NODE_ENV === 'development') {
-                console.error('displayBy prop does not exist')
-                return 'error: displayBy prop does not exist'
-              } else {
-                return ''
-              }
-            }
+            return value[this.displayBy]
+              ? value[this.displayBy]
+              : process.env.NODE_ENV === 'development' ? 'error: displayBy prop does not exist' : ''
           } else {
             return this.value
           }
@@ -105,6 +99,14 @@ export default {
 
         this.$emit('input', item)
       }
+    },
+
+    containerClasses () {
+      return ['a-select', {
+        '-label-margin': this.label,
+        '-opened': this.isOpened,
+        '-closed': !this.isOpened
+      }]
     },
 
     selectedClasses () {
@@ -183,14 +185,10 @@ export default {
     & > .text {
       opacity: 0.3;
       color: #121E48;
-      font-family: "Nunito Sans";
       font-size: 14px;
     }
 
-    & > .select-icon {
-      margin-left: auto;
-      padding-right: 15px;
-    }
+    & > .select-icon { margin-left: auto; padding-right: 15px; }
   }
 
   & > .options {
@@ -212,24 +210,28 @@ export default {
       border-bottom: 1px solid gray;
       cursor: pointer;
 
-      &:hover {
-        background-color: grey;
-      }
+      &:hover { background-color: grey; }
 
       & > .text {
+        position: relative;
         opacity: 0.8;
         color: #121E48;
-        font-family: "Nunito Sans";
         font-size: 14px;
       }
 
-      & > .selected { color: red; }
+      & > .selected {
+        position: absolute;
+        color: red;
+        background: #f00;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        right: 15px;
+      }
     }
   }
 
-  &.-label-margin {
-    margin-top: 20px;
-  }
+  &.-label-margin { margin-top: 20px; }
 
   &.-closed:hover { border: 1px solid purple; }
 
