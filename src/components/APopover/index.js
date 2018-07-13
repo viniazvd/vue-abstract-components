@@ -48,15 +48,3 @@ const popover = {
 }
 
 export default popover
-
-// export default {
-//   install (Vue, params = {}) {
-//     document.addEventListener('resize', (event) => {
-//       events.$emit('hide', { srcEvent: event })
-//     })
-
-//     Vue.component('Popover', popover)
-
-//     Vue.directive('popover', directive)
-//   }
-// }
