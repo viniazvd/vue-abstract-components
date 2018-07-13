@@ -77,7 +77,7 @@ export default {
           .find(option => Object.values(option)
             .find(v => v === this.value[this.displayBy]))
 
-        if (!value) return 'Opção inválida'
+        if (!value && this.displayBy) return 'Opção inválida'
 
         if (this.value) {
           if (this.displayBy && value[this.displayBy]) {

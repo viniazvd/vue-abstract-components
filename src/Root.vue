@@ -66,7 +66,6 @@
             icon="bug"
             v-model="form.value5"
             :options="options"
-            display-by="name"
             track-by="id"
           />
 
