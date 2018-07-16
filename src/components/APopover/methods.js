@@ -20,18 +20,13 @@ const methods = {
       if (name === this.name) {
         const direction = directions[position]
         this.positionClass = `position-${position}`
-        this.alignClass = `align-${align}`
         this.visible = true
 
         this.$nextTick(() => {
           this.$emit('show', event)
 
           this.$nextTick(() => {
-            const _position = this.getPosition(target, this.$refs.dropdown, direction, align)
-
-            if (align === 'right') { _position.left = 590 }
-            if (align === 'left') { _position.left = 450 }
-
+            const _position = this.getPosition(target, this.$refs.popover, direction, align)
             this.position = { left: `${_position.left}px`, top: `${_position.top}px` }
           })
         })
@@ -39,36 +34,31 @@ const methods = {
     })
   },
 
-  getAlign (target) {
+  getPosition (target, popover, direction, align) {
+    this.align = align
 
-  },
-
-  getPosition (target, dropdown, direction, align) {
-    const trRect = target.getBoundingClientRect()
-    const ddRect = dropdown.getBoundingClientRect()
+    const targetData = target.getBoundingClientRect()
+    const PopoverData = popover.getBoundingClientRect()
 
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
     const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft
 
-    const offsetLeft = trRect.left + scrollLeft
-    const offsetTop = trRect.top + scrollTop
+    const offsetLeft = targetData.left + scrollLeft
+    const offsetTop = targetData.top + scrollTop
 
-    const shiftY = 0.5 * (ddRect.height + trRect.height)
+    const shiftY = 0.5 * (PopoverData.height + targetData.height)
 
-    const centerX = offsetLeft - 0.5 * (ddRect.width - trRect.width)
-    const centerY = offsetTop + trRect.height - shiftY
-
-    let x = 0
+    let centerX = 0
     if (align === 'center') {
-      x = direction[0] * 0.5 * (ddRect.width + trRect.width)
-    } else if (align === 'left') {
-      console.log(ddRect.width + trRect.width)
-      x = direction[0] * 0.5 * (ddRect.width + trRect.width / 2)
+      centerX = offsetLeft - 0.5 * (PopoverData.width - targetData.width)
     } else {
-      x = direction[0] * 0.5 * (ddRect.width + trRect.width)
+      centerX = offsetLeft - 0.5 * (0 - targetData.width)
     }
 
-    let y = direction[1] * shiftY
+    const centerY = offsetTop + targetData.height - shiftY
+
+    const x = direction[0] * 0.5 * (PopoverData.width + targetData.width)
+    const y = direction[1] * shiftY
 
     return { left: centerX + x, top: centerY - y }
   },

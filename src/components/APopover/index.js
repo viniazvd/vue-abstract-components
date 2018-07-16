@@ -15,8 +15,8 @@ const popover = {
     return {
       visible: false,
       positionClass: '',
-      alignClass: '',
-      position: { left: 0, top: 0 }
+      position: { left: 0, top: 0 },
+      align: 'center'
     }
   },
 

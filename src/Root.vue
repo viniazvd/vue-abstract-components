@@ -74,7 +74,7 @@
       </a-card>
     </a-modal>
 
-    <a-button v-popover="{ name: 'coe', position: 'bottom', align: 'left' }">Toggle popoverrrrrrr</a-button>
+    <a-button v-popover="{ name: 'coe', position: 'bottom', align: 'right' }">ah mulheke</a-button>
 
     <a-popover name="coe">
       OPIA hehehe

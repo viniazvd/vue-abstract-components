@@ -1,8 +1,22 @@
 const computed = {
+  alignPosition () {
+    let translated = {}
+
+    if (this.align === 'center') {
+      translated = `translateX(-50%)`
+    } else if (this.align === 'left') {
+      translated = `translateX(calc(-100% + 15px))`
+    } else {
+      translated = `translateX(calc(-15px))`
+    }
+
+    return { transform: translated }
+  },
+
   style () {
     return {
-      width: `${this.width}px`,
-      height: `${this.height}px`,
+      // padding: `${this.padding}px`,
+      ...this.alignPosition,
       ...this.position
     }
   },
@@ -17,7 +31,7 @@ const computed = {
           event.stopPropagation()
         }
       },
-      ref: 'dropdown'
+      ref: 'popover'
     }
   }
 }

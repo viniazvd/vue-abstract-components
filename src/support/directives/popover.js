@@ -5,7 +5,7 @@ const defaultAlign = 'center'
 
 const prepareBinding = ({ arg = '', modifiers = {}, value = {} }) => {
   const mods = Object.keys(modifiers)
-  const name = typeof value === 'object' && value.name ? value.name : arg
+  const name = typeof value === 'object' && value.name ? value.name : console.warn('name not defined')
   const position = mods[0] || value.position || defaultPosition
   const align = value.align || defaultAlign
 

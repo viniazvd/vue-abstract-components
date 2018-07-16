@@ -3,13 +3,9 @@ const props = {
     type: String,
     required: true
   },
-  width: {
+  padding: {
     type: Number,
-    default: 300
-  },
-  height: {
-    type: Number,
-    default: 300
+    default: 15
   }
 }
 
