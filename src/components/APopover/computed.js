@@ -1,24 +1,30 @@
 const computed = {
   alignPosition () {
-    let translated = {}
+    const arrowSize = 4
 
-    if (this.align === 'center') {
-      translated = `translateX(-50%)`
-    } else if (this.align === 'left') {
-      translated = `translateX(calc(-100% + 15px))`
-    } else {
-      translated = `translateX(calc(-15px))`
+    if (this.align === 'left') {
+      const percentage = -100 + this.padding + arrowSize
+
+      return { transform: `translateX(calc(${percentage}%))` }
+    } else if ((this.align === 'right')) {
+      const pixels = -(this.padding + arrowSize)
+
+      return { transform: `translateX(calc(${pixels}px))` }
     }
+  },
 
-    return { transform: translated }
+  arrowPosition () {
+    if (this.align === 'center') {
+      return { '--left': '49%' }
+    } else if (this.align === 'left') {
+      return { '--right': `${this.padding}px` }
+    } else {
+      return { '--left': `${this.padding}px` }
+    }
   },
 
   style () {
-    return {
-      // padding: `${this.padding}px`,
-      ...this.alignPosition,
-      ...this.position
-    }
+    return { ...this.alignPosition, ...this.arrowPosition, ...this.position }
   },
 
   optionsPopover () {
