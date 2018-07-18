@@ -2,11 +2,12 @@
   <div id="app">
     <a-title size="1" color="red" icon="bug">COE MANÉÉÉÉ</a-title>
 
-    <tabs>
+    <!-- <tabs default-index="1">
       <tab title="COE">COE SELECIONADO</tab>
       <tab title="MANÉ">MANÉ SELECIONADO</tab>
       <tab title="BOLADAO">BOLADAO SELECIONADO</tab>
-    </tabs>
+      <tab title="OPIA">OPIA SELECIONADO</tab>
+    </tabs> -->
 
     <a-stepper :current="1" :total="3" />
 
@@ -79,11 +80,30 @@
     <a-popover name="coe">
       OPIA hehehe
     </a-popover>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <tabs>
+      <tab :tabs="tabs" />
+      <!-- <tab title="Tab 1" active="true">
+        opia
+      </tab>
+      <tab title="Tab 2" disabled>
+        coe
+      </tab>
+      <tab title="Tab 3">
+        mané
+      </tab> -->
+    </tabs>
   </div>
 </template>
 
 <script>
-import { Tabs, Tab } from './components/ATabber'
+// import { Tabs, Tab } from './components/ATabber'
+import Tabs from './components/Tabs.vue'
+import Tab from './components/Tab.vue'
 
 import formValidations from './support/mixins/formValidations'
 
