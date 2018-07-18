@@ -85,9 +85,16 @@
     <br>
     <br>
 
-    <tabs>
+    <a-tabber
+      class="toggler"
+      :tabs="navTabs"
+      :active-tab="activeTab"
+      @change-tab="$emit('change-active-tab', $event)"
+    />
+
+    <!-- <tabs>
       <tab :tabs="tabs" />
-      <!-- <tab title="Tab 1" active="true">
+      <tab title="Tab 1" active="true">
         opia
       </tab>
       <tab title="Tab 2" disabled>
@@ -95,15 +102,17 @@
       </tab>
       <tab title="Tab 3">
         mané
-      </tab> -->
-    </tabs>
+      </tab>
+    </tabs> -->
   </div>
 </template>
 
 <script>
 // import { Tabs, Tab } from './components/ATabber'
-import Tabs from './components/Tabs.vue'
-import Tab from './components/Tab.vue'
+// import Tabs from './components/Tabs.vue'
+// import Tab from './components/Tab.vue'
+
+import ATabber from './components/ATabber.vue'
 
 import formValidations from './support/mixins/formValidations'
 
@@ -124,8 +133,9 @@ export default {
     AModal: () => import('./components/AModal'),
     ASpinner: () => import('./components/ASpinner'),
     APopover: () => import('./components/APopover'),
-    Tabs,
-    Tab
+    ATabber
+    // Tabs,
+    // Tab
   },
 
   data () {
