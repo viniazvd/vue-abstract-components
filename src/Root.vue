@@ -86,10 +86,9 @@
     <br>
 
     <a-tabber
-      class="toggler"
       :tabs="navTabs"
       :active-tab="activeTab"
-      @change-tab="$emit('change-active-tab', $event)"
+      @change-tab="tab => activeTab = tab"
     />
 
     <!-- <tabs>
@@ -112,7 +111,7 @@
 // import Tabs from './components/Tabs.vue'
 // import Tab from './components/Tab.vue'
 
-import ATabber from './components/ATabber.vue'
+import ATabber from './components/ATabber'
 
 import formValidations from './support/mixins/formValidations'
 
@@ -154,7 +153,15 @@ export default {
         { id: 3, name: 'name-coe3', label: 'label-coe3' }
       ],
       toggled: false,
-      isOpen: false
+      isOpen: false,
+      navTabs: [
+        { name: 'participantes', value: 'participantes', icon: 'bug' },
+        { name: 'lançamentos', value: 'lancamentos', icon: 'bug' },
+        { name: 'conferência', value: 'conferencia' },
+        { name: 'boladao', value: 'boladao', disabled: true },
+        { name: 'pesadao', value: 'pesadao' }
+      ],
+      activeTab: 'lancamentos'
     }
   },
 
